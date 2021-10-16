@@ -21,6 +21,10 @@ classdef DataReader < DataHandler
 
         end
 
+        function readwrite(obj)
+
+        end
+
         function kill(obj)
 
         end

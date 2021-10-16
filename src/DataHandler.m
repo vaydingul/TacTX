@@ -2,9 +2,9 @@ classdef (Abstract = true) DataHandler < handle
 
     properties (Access = public)
 
-		Data
-		SampleRate
-		
+        Data
+        SampleRate
+
     end
 
     methods (Access = public)
@@ -21,9 +21,13 @@ classdef (Abstract = true) DataHandler < handle
 
         end
 
-		function kill(obj)
+        function readwrite(obj)
 
-		end
+        end
+
+        function kill(obj)
+
+        end
 
     end
 
