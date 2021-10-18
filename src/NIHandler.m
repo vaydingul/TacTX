@@ -4,15 +4,15 @@ classdef NIHandler < DAQHandler
 
         Interface
         Mode
-		Rate
-		
+        Rate
+
     end
 
-	properties (Access = private)
+    properties (Access = private)
 
-		DAQObject
+        DAQObject
 
-	end
+    end
 
     methods
 
@@ -21,21 +21,27 @@ classdef NIHandler < DAQHandler
             obj.Interface = "ni";
             obj.Mode = "Background";
 
-			obj.DAQObject = daq("ni");
-			obj.DAQObject.Rate = 1000;
+            obj.DAQObject = daq("ni");
+			obj.Rate = 1000;
+
+            obj.DAQObject.Rate = obj.Rate;
 
         end
 
-		function read(obj)
+		function addInputChannel(obj)
+			
+			
+		
 		end
 
-		function write(obj)
-		end
+        function read(obj)
+        end
 
-		function readwrite(obj)
-		end
+        function write(obj)
+        end
 
-
+        function readWrite(obj)
+        end
 
     end
 
