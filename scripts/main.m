@@ -23,3 +23,4 @@ niHandler.addInput(usbDAQ);
 forceSensor = ForceSensor;
 accelerometer = Accelerometer;
 signalGenerator = SignalGenerator;
+fingerTracker = FingerTracker;
