@@ -19,3 +19,7 @@ niHandler = NIHandler();
 
 niHandler.addInput(pciDAQ);
 niHandler.addInput(usbDAQ);
+
+forceSensor = ForceSensor;
+accelerometer = Accelerometer;
+signalGenerator = SignalGenerator;
