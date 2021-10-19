@@ -90,7 +90,6 @@ classdef NIHandler < DAQHandler
 
         end
 
-
         function removeChannel(obj)
 
             error("Not implemented!");
