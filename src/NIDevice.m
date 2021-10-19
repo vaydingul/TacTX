@@ -49,7 +49,7 @@ classdef NIDevice < Device
 
                 if isstring(obj.MeasurementType)
 
-                    obj.MeasurementType = repmat({obj.MeasurementType}, length(obj.Channel))
+                    obj.MeasurementType = repmat({obj.MeasurementType}, 1, length(obj.Channel))
 
                 else
 
@@ -75,7 +75,7 @@ classdef NIDevice < Device
 
                 if isstring(obj.Direction)
 
-                    obj.Direction = repmat({obj.Direction}, length(obj.Channel))
+                    obj.Direction = repmat({obj.Direction}, 1, length(obj.Channel))
 
                 else
 
