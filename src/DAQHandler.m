@@ -9,6 +9,16 @@ classdef (Abstract = true) DAQHandler < Handler
 
 	methods
 		
+		addInput(obj)
+        read(obj)
+        readWrite(obj)
+        start(obj)
+        stop(obj)
+        removeChannel(obj)
+        flush(obj)
+        addOutput(obj)
+        write(obj)
+        preload(obj)
 		
 	end
 

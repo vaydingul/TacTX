@@ -10,7 +10,7 @@ classdef NIHandler < DAQHandler
 
     properties (Access = private)
 
-        DAQObject
+        DataAcqusitionObject
 
     end
 
@@ -21,26 +21,51 @@ classdef NIHandler < DAQHandler
             obj.Interface = "ni";
             obj.Mode = "Background";
 
-            obj.DAQObject = daq("ni");
-			obj.Rate = 1000;
+            obj.DataAcqusitionObject = daq("ni");
+            obj.Rate = 1000;
 
-            obj.DAQObject.Rate = obj.Rate;
+            obj.DataAcqusitionObject.Rate = obj.Rate;
 
         end
 
-		function addInputChannel(obj)
-			
-			
-		
-		end
+        function addInput(obj, varargin)
 
-        function read(obj)
         end
 
-        function write(obj)
+        function outData = read(obj, varargin)
+
         end
 
-        function readWrite(obj)
+        function outData = readWrite(obj, inData)
+
+        end
+
+        function start(obj)
+
+        end
+
+        function stop(obj)
+
+        end
+
+        function removeChannel(obj)
+
+        end
+
+        function flush(obj)
+
+        end
+
+        function addOutput(obj, varargin)
+
+        end
+
+        function write(obj, inData, varargin)
+
+        end
+
+        function preload(obj)
+
         end
 
     end
