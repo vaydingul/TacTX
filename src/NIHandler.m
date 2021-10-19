@@ -5,7 +5,7 @@ classdef NIHandler < DAQHandler
         Interface
         Mode
         Rate
-
+        DataFormat
     end
 
     properties (Access = private)
@@ -14,7 +14,7 @@ classdef NIHandler < DAQHandler
 
     end
 
-    methods
+    methods (Access = public)
 
         function obj = NIHandler(varargin)
 
@@ -23,6 +23,17 @@ classdef NIHandler < DAQHandler
 
             obj.DataAcqusitionObject = daq("ni");
             obj.Rate = 1000;
+            obj.DataFormat = 'Matrix';
+
+            if ~isempty(varargin) && mod(nvarargin, 2) == 0
+
+                for k = 1:2:nvarargin
+
+                    obj.(varargin{k}) = varargin{k + 1};
+
+                end
+
+            end
 
             obj.DataAcqusitionObject.Rate = obj.Rate;
 
@@ -30,41 +41,100 @@ classdef NIHandler < DAQHandler
 
         function addInput(obj, varargin)
 
-        end
+            if nargin == 1 && isinstance(varargin{1}, 'NIDevice');
 
-        function outData = read(obj, varargin)
+                obj.addInputByNIDevice(varargin{1});
 
-        end
-
-        function outData = readWrite(obj, inData)
-
-        end
-
-        function start(obj)
-
-        end
-
-        function stop(obj)
-
-        end
-
-        function removeChannel(obj)
-
-        end
-
-        function flush(obj)
+            end
 
         end
 
         function addOutput(obj, varargin)
 
+            if nargin == 1 && isinstance(varargin{1}, 'NIDevice');
+
+                obj.addOutputByNIDevice(varargin{1});
+
+            end
+
         end
 
-        function write(obj, inData, varargin)
+        function outData = read(obj, span)
+
+            outData = read(obj.DataAcqusitionObject, span);
+
+        end
+
+        function write(obj, inData)
+
+            write(obj.DataAcqusitionObject, inData);
+
+        end
+
+        function outData = readWrite(obj, inData)
+
+            outData = readwrite(obj.DataAcqusitionObject, inData);
+
+        end
+
+        function start(obj, varargin)
+
+            start(obj.DataAcqusitionObject, varargin);
+
+        end
+
+        function stop(obj)
+
+            stop(obj.DataAcqusitionObject);
+
+        end
+
+
+        function removeChannel(obj)
+
+            error("Not implemented!");
+
+        end
+
+        function flush(obj)
+
+            error("Not implemented!");
 
         end
 
         function preload(obj)
+
+        end
+
+    end
+
+    methods (Access = private)
+
+        function addInputByNIDevice(obj, nidevice)
+
+            for k = 1:length(nidevice.Channel)
+
+                if nidevice.Direction{k} == "Input"
+
+                    addinput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
+
+                end
+
+            end
+
+        end
+
+        function addOutputByNIDevice(obj, nidevice)
+
+            for k = 1:length(nidevice.Channel)
+
+                if nidevice.Direction{k} == "Input"
+
+                    addoutput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
+
+                end
+
+            end
 
         end
 

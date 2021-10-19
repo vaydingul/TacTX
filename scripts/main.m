@@ -14,3 +14,8 @@ usbDAQ2 = NIDevice("Dev2",...
 				"Output");
 
 usbDAQ = usbDAQ1 + usbDAQ2;
+
+niHandler = NIHandler();
+
+niHandler.addInput(pciDAQ);
+niHandler.addInput(usbDAQ);
