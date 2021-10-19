@@ -40,7 +40,7 @@ classdef MISCHandler < Handler
             screenSize = get(0, 'MonitorPositions');
             outData = pointerLocation ./ screenSize(3:4);
 
-            set(obj.Transducer, 'FingerPosition', outData);
+            obj.Transducer.FingerPosition = outData;
         end
 
         function start(obj)
