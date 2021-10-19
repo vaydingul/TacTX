@@ -1,13 +1,13 @@
 classdef (Abstract = true) Handler < handle
 
-    properties
+    properties (Abstract = true)
 
         Interface
         Mode
 
     end
 
-    methods
+    methods (Abstract = true)
 
         addInput(obj)
         read(obj)
