@@ -22,22 +22,21 @@ classdef NIDevice < Device
             obj.checkDirection();
         end
 
-		function obj = plus(obj, nidevice)
+        function obj = plus(obj, nidevice)
 
-			if obj.Name ~= nidevice.Name
+            if obj.Name ~= nidevice.Name
 
-				error("Name of the devices should be same.")
+                error("Name of the devices should be same.")
 
-			else
+            else
 
-				obj.addChannel(nidevice.Channel);
-				obj.addMeasurementType(nidevice.MeasurementType);
-				obj.addDirection(nidevice.Direction);
+                obj.addChannel(nidevice.Channel);
+                obj.addMeasurementType(nidevice.MeasurementType);
+                obj.addDirection(nidevice.Direction);
 
-			end
+            end
 
-		end
-        
+        end
 
     end
 
@@ -95,18 +94,42 @@ classdef NIDevice < Device
 
         end
 
-		function addChannel(obj, channel)
-			obj.Channel = {obj.Channel channel{:}};
+        function addChannel(obj, channel)
+
+            if isstring(channel)
+                obj.Channel = cat(2, obj.Channel, {channel});
+            elseif iscell(channel)
+                obj.Channel = cat(2, obj.Channel, channel);
+            else
+                error("Channel must be a string scalar or a  cell array.")
+            end
+
         end
 
         function addMeasurementType(obj, measurementType)
-			obj.MeasurementType = {obj.MeasurementType measurementType{:}};
+
+            if isstring(measurementType)
+                obj.MeasurementType = cat(2, obj.MeasurementType, {measurementType});
+            elseif iscell(measurementType)
+                obj.MeasurementType = cat(2, obj.MeasurementType, measurementType);
+            else
+                error("Measurement type must be a string scalar or a  cell array.")
+            end 
+        
         end
 
-        function addDirection(obj, direction)
-			obj.Direction = {obj.Direction direction{:}};
+            function addDirection(obj, direction)
+
+                if isstring(direction)
+                    obj.Direction = cat(2, obj.Direction, {direction});
+                elseif iscell(direction)
+                    obj.Direction = cat(2, obj.Direction, direction);
+                else
+                    error("Direction must be a string scalar or a  cell array.")
+                end 
+            
+            end
+
+            end
+
         end
-
-    end
-
-end
