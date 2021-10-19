@@ -96,15 +96,15 @@ classdef NIDevice < Device
         end
 
 		function addChannel(obj, channel)
-			obj.Channel = {obj.Channel channel};
+			obj.Channel = {obj.Channel channel{:}};
         end
 
         function addMeasurementType(obj, measurementType)
-			obj.MeasurementType = {obj.MeasurementType measurementType};
+			obj.MeasurementType = {obj.MeasurementType measurementType{:}};
         end
 
         function addDirection(obj, direction)
-			obj.Direction = {obj.Direction direction};
+			obj.Direction = {obj.Direction direction{:}};
         end
 
     end
