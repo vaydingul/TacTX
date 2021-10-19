@@ -43,4 +43,14 @@ classdef Accelerometer < Transducer
 
     end
 
+    methods
+
+        function set.GaugeVoltage(obj, gaugeVoltage)
+
+            obj.GaugeVoltage = gaugeVoltage;
+            obj.process();
+        end
+
+    end
+
 end

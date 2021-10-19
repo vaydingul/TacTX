@@ -43,7 +43,10 @@ classdef TacTX < handle
                 end
 
             end
-
+			
+			set(obj.NIHandler, 'ScansAvailableFunction', @obj.ScansAvailableFunction);
+			set(obj.NIHandler, 'ScansAvailableFunctionCount', 100);
+			
 			obj.match();
 			
 		end
@@ -76,6 +79,15 @@ classdef TacTX < handle
 			obj.NIHandler.addDevice(obj.Accelerometer);
 			obj.NIHandler.addDevice(obj.SignalGenerator);
 			obj.MISCHandler.Transducer = obj.FingerTracker;
+
+		end
+
+		function scansAvailableFunction(obj)
+
+			outData = obj.NIHandler.read();
+			
+			set(obj.ForceSensor, 'GaugeVoltage', outData(:, 1:6);
+			set(obj.Accelerometer, 'GaugeVoltage', outData(:, 7:9);
 
 		end
 

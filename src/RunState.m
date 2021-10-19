@@ -5,20 +5,22 @@ classdef RunState < State
 
 		function run(obj, tactx)
 
-
+			warning("TacTX is currently in the RUN state.")
 			tactx.State = RunState();
 		end
 
 		function idle(obj, tactx)
 
-
+			obj.TacTX.NIHandler.stop();
+			obj.TacTX.MISCHandler.stop();
 			tactx.State = IdleState();
 		end
 
 		function save(obj, tactx)
 
-
+			save('trial.mat', 'obj');
 			tactx.State = SaveState();
+			
 		end
 
 	end

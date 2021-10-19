@@ -34,13 +34,22 @@ classdef SignalGenerator < Transducer
 
 		end
 
-	
-
 		function process(obj)
 
 			obj.Signal = repmat((obj.Signal + obj.Bias) * obj.Scale, 1, obj.Repetition);
 
 		end
+	end
+
+	methods
+
+		function set.Signal(obj, signal)
+
+			obj.Signal = signal;
+			obj.process();
+
+		end
+
 	end
 
 end

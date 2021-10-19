@@ -73,7 +73,7 @@ classdef NIHandler < DAQHandler
         function outData = read(obj, span)
 
             outData = read(obj.DataAcqusitionObject, span, 'OutputFormat', obj.DataFormat);
-
+            
         end
 
         function write(obj, inData)
@@ -112,12 +112,32 @@ classdef NIHandler < DAQHandler
 
         end
 
-        function preload(obj)
+        function preload(obj, outData)
+
+            preload(obj.DataAcqusitionObject, outData);
 
         end
 
     end
 
+    methods
+
+        function set.ScansAvailableFunction(obj, functionHandle)
+
+            obj.ScansAvailableFunction = functionHandle;
+            obj.DataAcqusitionObject.ScansAvailableFcn = obj.ScansAvailableFunction;
+            
+        end
+
+        function set.ScansAvailableFunctionCount(obj, count)
+
+            obj.ScansAvailableFunctionCount = count;
+            obj.DataAcqusitionObject.ScansAvailableFcnCount = obj.ScansAvailableFunctionCount;
+
+        end
+
+
+    end
     methods (Access = private)
 
         function addNIDevice(obj, nidevice)
