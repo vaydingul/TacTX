@@ -28,6 +28,18 @@ classdef () MISCHandler < Handler
             outData = pointerLocation ./ screenSize(3:4);            
 
 		end
+
+		function start(obj)
+
+			start(obj.Timer);
+
+		end
+
+		function stop(obj);
+
+			stop(obj.Timer);
+
+		end
 	end
 
 	
