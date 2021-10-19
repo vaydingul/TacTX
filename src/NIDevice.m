@@ -22,7 +22,7 @@ classdef NIDevice < Device
             obj.checkDirection();
         end
 
-		function plus(obj, nidevice)
+		function obj = plus(obj, nidevice)
 
 			if obj.Name ~= nidevice.Name
 
