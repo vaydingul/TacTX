@@ -2,7 +2,7 @@ classdef (Abstract = true) Handler < handle
 
     properties
 
-        Vendor
+        Interface
         Mode
 
     end
