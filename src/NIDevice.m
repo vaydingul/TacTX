@@ -114,22 +114,22 @@ classdef NIDevice < Device
                 obj.MeasurementType = cat(2, obj.MeasurementType, measurementType);
             else
                 error("Measurement type must be a string scalar or a  cell array.")
-            end 
-        
-        end
-
-            function addDirection(obj, direction)
-
-                if isstring(direction)
-                    obj.Direction = cat(2, obj.Direction, {direction});
-                elseif iscell(direction)
-                    obj.Direction = cat(2, obj.Direction, direction);
-                else
-                    error("Direction must be a string scalar or a  cell array.")
-                end 
-            
-            end
-
             end
 
         end
+
+        function addDirection(obj, direction)
+
+            if isstring(direction)
+                obj.Direction = cat(2, obj.Direction, {direction});
+            elseif iscell(direction)
+                obj.Direction = cat(2, obj.Direction, direction);
+            else
+                error("Direction must be a string scalar or a  cell array.")
+            end
+
+        end
+
+    end
+
+end
