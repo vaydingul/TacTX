@@ -6,6 +6,7 @@ classdef NIHandler < DAQHandler
         Mode
         Rate
         DataFormat
+        
     end
 
     properties (Access = private)
