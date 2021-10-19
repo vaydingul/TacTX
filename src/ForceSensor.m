@@ -1,4 +1,4 @@
-classdef ForceSensor < Sensor
+classdef ForceSensor < Transducer
 
 	properties (Access = public)
 

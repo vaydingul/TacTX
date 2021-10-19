@@ -1,4 +1,4 @@
-classdef Accelerometer < Sensor
+classdef Accelerometer < Transducer
 
 	properties (Access = public)
 

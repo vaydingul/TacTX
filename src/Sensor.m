@@ -1,4 +1,4 @@
-classdef (Abstract = true) Sensor < handle
+classdef (Abstract = true) Transducer < handle
 	
 	methods (Abstract = true)
 		
