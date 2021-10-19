@@ -62,7 +62,7 @@ classdef NIHandler < DAQHandler
 
         function outData = read(obj, span)
 
-            outData = read(obj.DataAcqusitionObject, span);
+            outData = read(obj.DataAcqusitionObject, span, 'OutputFormat', obj.DataFormat);
 
         end
 
