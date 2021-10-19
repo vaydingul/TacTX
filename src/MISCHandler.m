@@ -1,4 +1,4 @@
-classdef () MISCHandler < Handler
+classdef MISCHandler < Handler
 
     properties (Access = public)
         Rate
@@ -20,8 +20,7 @@ classdef () MISCHandler < Handler
                 'StartDelay', 0, ...
                 'TasksToExecute', 3, ...
                 'BusyMode', 'queue', ...
-                'ExecutionMode', 'fixedRate', ...
-                );
+                'ExecutionMode', 'fixedRate');
 
             if ~isempty(varargin) && mod(nvarargin, 2) == 0
 
@@ -50,7 +49,7 @@ classdef () MISCHandler < Handler
 
         end
 
-        function stop(obj);
+        function stop(obj)
 
             stop(obj.Timer);
 
