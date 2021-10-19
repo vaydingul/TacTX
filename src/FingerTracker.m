@@ -25,16 +25,20 @@ classdef FingerTracker < Transducer
 
         end
 
-        function set.FingerPosition(obj, fingerPosition)
+        function process(obj)
+
+        end
+        
+    end
+    
+    methods
+        
+         function set.FingerPosition(obj, fingerPosition)
 
             obj.FingerPosition = fingerPosition;
 
         end
         
-        function process(obj)
-
-        end
-
     end
 
 end

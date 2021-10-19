@@ -128,7 +128,7 @@ classdef NIHandler < DAQHandler
 
                     addinput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
                 
-                elseif strcmp(nidevice.Direction{k}, "Output"
+                elseif strcmp(nidevice.Direction{k}, "Output")
 
                     addoutput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
 
