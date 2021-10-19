@@ -48,6 +48,24 @@ classdef TacTX < handle
 			
 		end
 
+		function run(obj)
+
+			obj.State.run(obj);
+
+		end
+
+		function idle(obj)
+
+			obj.State.idle(obj);
+
+		end
+
+		function save(obj)
+
+			obj.State.save(obj);
+
+		end
+
 	end
 
 	methods (Access = private)

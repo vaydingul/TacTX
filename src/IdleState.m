@@ -1,33 +1,30 @@
 classdef IdleState < State
 
-	properties (Access = public)
-
-		TacTX
-		
-	end
+	
 
 	methods (Access = public)
 
-		function run(obj)
+		function run(obj, tactx)
 
+			obj.TacTX.NIHandler.start('RepeatOutput');
 
-			obj.TacTX.State = RunState();
-
-			
-		end
-
-		function idle(obj)
-
-
-			obj.TacTX.State = IdleState();
+			tactx.State = RunState();
 
 
 		end
 
-		function save(obj)
+		function idle(obj, tactx)
 
 
-			obj.TacTX.State = SaveState();
+			tactx.State = IdleState();
+
+
+		end
+
+		function save(obj, tactx)
+
+
+			tactx.State = SaveState();
 
 
 		end

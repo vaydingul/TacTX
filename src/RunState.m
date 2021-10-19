@@ -1,29 +1,24 @@
 classdef RunState < State
 
-	properties (Access = public)
-
-		TacTX
-		
-	end
-
+	
 	methods (Access = public)
 
-		function run(obj)
+		function run(obj, tactx)
 
 
-			obj.TacTX.State = RunState();
+			tactx.State = RunState();
 		end
 
-		function idle(obj)
+		function idle(obj, tactx)
 
 
-			obj.TacTX.State = IdleState();
+			tactx.State = IdleState();
 		end
 
-		function save(obj)
+		function save(obj, tactx)
 
 
-			obj.TacTX.State = SaveState();
+			tactx.State = SaveState();
 		end
 
 	end
