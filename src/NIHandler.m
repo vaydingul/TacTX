@@ -10,9 +10,9 @@ classdef NIHandler < DAQHandler
     end
 
     properties (Access = private)
-        
+
         DataAcqusitionObject
-        
+
     end
 
     methods (Access = public)
@@ -37,6 +37,16 @@ classdef NIHandler < DAQHandler
             end
 
             obj.DataAcqusitionObject.Rate = obj.Rate;
+
+        end
+
+        function addDevice(obj, varargin)
+
+            if nargin > 1 && isa(varargin{1}, 'NIDevice')
+
+                obj.addNIDevice(varargin{1});
+
+            end
 
         end
 
@@ -110,6 +120,24 @@ classdef NIHandler < DAQHandler
 
     methods (Access = private)
 
+        function addNIDevice(obj, nidevice)
+
+            for k = 1:length(nidevice.Channel)
+
+                if strcmp(nidevice.Direction{k}, "Input")
+
+                    addinput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
+                
+                elseif strcmp(nidevice.Direction{k}, "Output"
+
+                    addoutput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
+
+                end
+
+            end
+
+        end
+
         function addInputByNIDevice(obj, nidevice)
 
             for k = 1:length(nidevice.Channel)
@@ -128,7 +156,7 @@ classdef NIHandler < DAQHandler
 
             for k = 1:length(nidevice.Channel)
 
-                if strcmp(nidevice.Direction{k} , "Output")
+                if strcmp(nidevice.Direction{k}, "Output")
 
                     addoutput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
 

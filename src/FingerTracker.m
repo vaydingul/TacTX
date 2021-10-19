@@ -9,7 +9,7 @@ classdef FingerTracker < Transducer
 
     methods (Access = public)
 
-        function obj = ForceSensor(varargin)
+        function obj = FingerTracker(varargin)
 
             obj.Device = "";
 
@@ -25,6 +25,12 @@ classdef FingerTracker < Transducer
 
         end
 
+        function set.FingerPosition(obj, fingerPosition)
+
+            obj.FingerPosition = fingerPosition;
+
+        end
+        
         function process(obj)
 
         end

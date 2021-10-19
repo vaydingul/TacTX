@@ -11,7 +11,7 @@ classdef Accelerometer < Transducer
 
     methods (Access = public)
 
-        function obj = ForceSensor(varargin)
+        function obj = Accelerometer(varargin)
 
             obj.Device = NIDevice("Dev2", ...
                 {"ai4", "ai12", "ai5"}, ...

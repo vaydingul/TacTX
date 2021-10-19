@@ -3,13 +3,15 @@ classdef () MISCHandler < Handler
     properties (Access = public)
         Rate
         Timer
+        Transducer
     end
 
     methods (Access = public)
 
-        function obj = MISCHandler(rate)
+        function obj = MISCHandler(varargin)
 
-            obj.Rate = rate;
+            obj.Rate = 1000;
+            obj.Transducer = FingerTracker();
 
             obj.Timer = timer('TimerFcn', @obj.read, ...
                 'StartFcn', '', ...
@@ -20,6 +22,17 @@ classdef () MISCHandler < Handler
                 'BusyMode', 'queue', ...
                 'ExecutionMode', 'fixedRate', ...
                 );
+
+            if ~isempty(varargin) && mod(nvarargin, 2) == 0
+
+                for k = 1:2:nvarargin
+
+                    obj.(varargin{k}) = varargin{k + 1};
+
+                end
+
+            end
+
         end
 
         function outData = read(obj)
@@ -28,6 +41,7 @@ classdef () MISCHandler < Handler
             screenSize = get(0, 'MonitorPositions');
             outData = pointerLocation ./ screenSize(3:4);
 
+            set(obj.Transducer, 'FingerPosition', outData);
         end
 
         function start(obj)
