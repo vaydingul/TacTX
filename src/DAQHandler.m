@@ -1,15 +1,15 @@
-classdef (Abstract = true) DAQHandler < Handler	
-	
-	properties (Abstract = true)
+classdef (Abstract = true) DAQHandler < Handler
 
-		Interface
-		Mode % Data acquisition mode (Background or Foreground)
+    properties (Abstract = true)
 
-	end
+        Interface
+        Mode % Data acquisition mode (Background or Foreground)
 
-	methods (Abstract = true)
-		
-		addInput(obj)
+    end
+
+    methods (Abstract = true)
+
+        addInput(obj)
         read(obj)
         readWrite(obj)
         start(obj)
@@ -19,8 +19,7 @@ classdef (Abstract = true) DAQHandler < Handler
         addOutput(obj)
         write(obj)
         preload(obj)
-		
-	end
 
+    end
 
 end

@@ -6,7 +6,7 @@ classdef NIHandler < DAQHandler
         Mode
         Rate
         DataFormat
-        
+
     end
 
     properties (Access = private)
@@ -89,7 +89,6 @@ classdef NIHandler < DAQHandler
             stop(obj.DataAcqusitionObject);
 
         end
-
 
         function removeChannel(obj)
 
