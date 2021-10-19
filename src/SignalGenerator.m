@@ -4,6 +4,7 @@ classdef SignalGenerator < Transducer
 
 		Device
 		Signal
+        SignalProcessed
 		Repetition
 		Bias
 		Scale 
@@ -11,33 +12,34 @@ classdef SignalGenerator < Transducer
 
 	methods (Access = public)
 
-		function obj = ForceSensor(varargin)
+		function obj = SignalGenerator(varargin)
 			
 			obj.Device = NIDevice("Dev2",...
 								{"ao1"},...
 								"Voltage",...
 								"Output");
-			obj.Signal = [];
-			obj.Repetition = 1;
+            obj.Repetition = 1;
 			obj.Bias = 1;
-			obj.Scale = 1;
+			obj.Scale = 1;                
+			obj.Signal = [];
 			
-			if ~isempty(varargin) && mod(nvarargin, 2) == 0
-
+			
+            if ~isempty(varargin) && mod(nvarargin, 2) == 0
+                
                 for k = 1:2:nvarargin
-
+                    
                     obj.(varargin{k}) = varargin{k + 1};
-
+                    
                 end
-
+                
             end
 
 		end
 
 		function process(obj)
-
-			obj.Signal = repmat((obj.Signal + obj.Bias) * obj.Scale, 1, obj.Repetition);
-
+            
+			obj.SignalProcessed = repmat((obj.Signal + obj.Bias) * obj.Scale, obj.Repetition);
+            
 		end
 	end
 
@@ -46,8 +48,7 @@ classdef SignalGenerator < Transducer
 		function set.Signal(obj, signal)
 
 			obj.Signal = signal;
-			obj.process();
-
+            obj.process();
 		end
 
 	end

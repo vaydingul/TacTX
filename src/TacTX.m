@@ -34,18 +34,18 @@ classdef TacTX < handle
 			obj.SignalGenerator = SignalGenerator;
 			obj.FingerTracker = FingerTracker;
 
-			if ~isempty(varargin) && mod(nargin, 2) == 0
-
+            if ~isempty(varargin) && mod(nargin, 2) == 0
+                
                 for k = 1:2:nargin
-
+                    
                     obj.(varargin{k}) = varargin{k + 1};
-
+                    
                 end
-
+                
             end
 			
-			set(obj.NIHandler, 'ScansAvailableFunction', @obj.ScansAvailableFunction);
-			set(obj.NIHandler, 'ScansAvailableFunctionCount', 100);
+			obj.NIHandler.ScansAvailableFunction = @obj.scansAvailableFunction;
+			obj.NIHandler.ScansAvailableFunctionCount = 100;
 			
 			obj.match();
 			
@@ -86,8 +86,8 @@ classdef TacTX < handle
 
 			outData = obj.NIHandler.read();
 			
-			set(obj.ForceSensor, 'GaugeVoltage', outData(:, 1:6);
-			set(obj.Accelerometer, 'GaugeVoltage', outData(:, 7:9);
+			set(obj.ForceSensor, 'GaugeVoltage', outData(:, 1:6));
+			set(obj.Accelerometer, 'GaugeVoltage', outData(:, 7:9));
 
 		end
 

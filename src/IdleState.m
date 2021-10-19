@@ -6,9 +6,9 @@ classdef IdleState < State
 
 		function run(obj, tactx)
 			
-			obj.TacTX.NIHandler.preload(get(obj.TacTX.SignalGenerator, 'Signal'));
-			obj.TacTX.NIHandler.start('RepeatOutput');
-			obj.TacTX.MISCHandler.start();
+			tactx.NIHandler.preload(tactx.SignalGenerator.Signal);
+			tactx.NIHandler.start('RepeatOutput');
+			tactx.MISCHandler.start();
 
 			tactx.State = RunState();
 

@@ -6,13 +6,20 @@ classdef NIHandler < DAQHandler
         Mode
         Rate
         DataFormat
-
+        
+    end
+    
+    properties
+        
+        ScansAvailableFunction
+        ScansAvailableFunctionCount
+        
     end
 
     properties (Access = private)
 
         DataAcqusitionObject
-
+        
     end
 
     methods (Access = public)
@@ -42,9 +49,9 @@ classdef NIHandler < DAQHandler
 
         function addDevice(obj, varargin)
 
-            if nargin > 1 && isa(varargin{1}, 'NIDevice')
+            if nargin > 1 && isa(varargin{1}.Device, 'NIDevice')
 
-                obj.addNIDevice(varargin{1});
+                obj.addNIDevice(varargin{1}.Device);
 
             end
 
@@ -90,7 +97,7 @@ classdef NIHandler < DAQHandler
 
         function start(obj, varargin)
 
-            start(obj.DataAcqusitionObject, varargin);
+            start(obj.DataAcqusitionObject, varargin{:});
 
         end
 
@@ -136,8 +143,8 @@ classdef NIHandler < DAQHandler
 
         end
 
-
     end
+    
     methods (Access = private)
 
         function addNIDevice(obj, nidevice)
