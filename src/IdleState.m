@@ -6,6 +6,7 @@ classdef IdleState < State
 
 		function run(obj, tactx)
 			
+			tactx.NIHandler.flush();
 			tactx.NIHandler.preload(tactx.SignalGenerator.Signal);
 			tactx.NIHandler.start();
 			tactx.MISCHandler.start();

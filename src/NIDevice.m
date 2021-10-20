@@ -6,6 +6,7 @@ classdef NIDevice < Device
         Channel
         MeasurementType
         Direction
+        TerminalConfig
 
     end
 
@@ -18,8 +19,11 @@ classdef NIDevice < Device
             obj.MeasurementType = measurementType;
             obj.Direction = direction
             obj.TerminalConfig = terminalConfig;
+
             obj.checkMeasurementType();
             obj.checkDirection();
+            obj.checkTerminalConfig();
+            
         end
 
         function obj = plus(obj, nidevice)

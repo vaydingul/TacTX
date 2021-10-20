@@ -11,8 +11,9 @@ classdef RunState < State
 
 		function idle(obj, tactx)
 
-			obj.TacTX.NIHandler.stop();
-			obj.TacTX.MISCHandler.stop();
+			tactx.NIHandler.stop();			
+			tactx.MISCHandler.stop();
+			
 			tactx.State = IdleState();
 		end
 

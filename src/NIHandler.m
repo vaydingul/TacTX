@@ -112,7 +112,7 @@ classdef NIHandler < DAQHandler
 
         function flush(obj)
 
-            error("Not implemented!");
+            flush(obj.DataAcqusitionObject);
 
         end
 
