@@ -48,9 +48,9 @@ classdef TacTX < handle
             obj.NIHandler.ScansAvailableFunctionCount = 100;
 
             obj.NIHandler.ScansRequiredFunction = @(src, evt) obj.scansRequiredFunction(src, evt);
-            obj.NIHandler.ScansRequiredFunctionCount = 500;
+            obj.NIHandler.ScansRequiredFunctionCount = 1000;
 
-            obj.match();
+            obj.organize();
 
         end
 
@@ -76,12 +76,14 @@ classdef TacTX < handle
 
     methods (Access = private)
 
-        function match(obj)
+        function organize(obj)
 
             obj.NIHandler.addDevice(obj.ForceSensor);
             obj.NIHandler.addDevice(obj.Accelerometer);
             obj.NIHandler.addDevice(obj.SignalGenerator);
             obj.MISCHandler.Transducer = obj.FingerTracker;
+            
+            obj.SignalGenerator.BufferStep = obj.NIHandler.ScansRequiredFunctionCount;
 
         end
 
@@ -94,10 +96,11 @@ classdef TacTX < handle
 
         end
 
-        function scansRequiredFunction(obj, ~, ~)
-
+        function scansRequiredFunction(obj, src, evt)
+            disp(".");
+            disp(num2str(obj.SignalGenerator.Buffer));
             obj.NIHandler.write(obj.SignalGenerator.SignalProcessed(obj.SignalGenerator.Buffer:obj.SignalGenerator.Buffer + obj.NIHandler.ScansRequiredFunctionCount));
-            obj.SignalGenerator.Buffer = obj.SignalGenerator.Buffer + 500;
+            obj.SignalGenerator.Buffer = obj.SignalGenerator.Buffer + obj.NIHandler.ScansRequiredFunctionCount;
 
         end
 

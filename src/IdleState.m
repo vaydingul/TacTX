@@ -7,10 +7,10 @@ classdef IdleState < State
 		function run(obj, tactx)
 			
 			tactx.NIHandler.flush();
-			tactx.NIHandler.preload(tactx.SignalGenerator.SignalProcessed(tactx.SignalGenerator.Buffer:tactx.SignalGenerator.Buffer + 500));
-			tactx.SignalGenerator.Buffer = tactx.SignalGenerator.Buffer+500;
+			tactx.NIHandler.preload(tactx.SignalGenerator.SignalProcessed(1 : floor(length(tactx.SignalGenerator.SignalProcessed)/2)));
+			tactx.SignalGenerator.Buffer = tactx.SignalGenerator.Buffer + floor(length(tactx.SignalGenerator.SignalProcessed)/2);
 			
-			tactx.NIHandler.start();
+			tactx.NIHandler.start("Continuous");
 			tactx.MISCHandler.start();
 
 			tactx.State = RunState();

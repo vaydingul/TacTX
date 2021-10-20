@@ -14,6 +14,7 @@ classdef SignalGenerator < Transducer
 	properties
 
 		Buffer
+		BufferStep
 
 	end
 
@@ -62,7 +63,7 @@ classdef SignalGenerator < Transducer
 
 		function set.Buffer(obj, buffer)
 
-			if buffer > length(obj.SignalProcessed)
+			if buffer + obj.BufferStep > length(obj.SignalProcessed) 
 
 				buffer = 1;
 
