@@ -16,12 +16,14 @@ classdef Accelerometer < Transducer
             obj.Device = NIDevice("Dev2", ...
                 {"ai4", "ai12", "ai5"}, ...
                 "Voltage", ...
-                "Input");
-            obj.GaugeVoltage = [];
-            obj.Acceleration = [];
-
+                "Input", ...
+                "SignleEnded");
+            
             obj.Bias = [1.6571 1.6695 1.6571];
-            obj.Scale = [1.3168 0.33 0.33];
+            obj.Scale = [0.3168 0.33 0.33];
+            
+            obj.GaugeVoltage = zeros(1, 3);
+            obj.Acceleration = zeros(1, 3);
 
             if ~isempty(varargin) && mod(nvarargin, 2) == 0
 

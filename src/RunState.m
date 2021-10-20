@@ -18,7 +18,7 @@ classdef RunState < State
 
 		function save(obj, tactx)
 
-			save('trial.mat', 'obj');
+			save('trial.mat', 'tactx');
 			tactx.State = SaveState();
 			
 		end

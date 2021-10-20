@@ -44,7 +44,7 @@ classdef TacTX < handle
                 
             end
 			
-			obj.NIHandler.ScansAvailableFunction =@(src, evt) obj.scansAvailableFunction;
+			obj.NIHandler.ScansAvailableFunction =@(src, evt) obj.scansAvailableFunction(src, evt);
 			obj.NIHandler.ScansAvailableFunctionCount = 100;
 			
 			obj.match();
@@ -82,12 +82,12 @@ classdef TacTX < handle
 
 		end
 
-		function scansAvailableFunction(obj)
+		function scansAvailableFunction(obj, ~, ~)
 
-			outData = obj.NIHandler.read();
+			outData = obj.NIHandler.read(100);
 			
-			obj.ForceSensor.GaugeVoltage = outData(:, 1:6);
-			obj.Accelerometer.GaugeVoltage = outData(:, 7:9);
+			obj.ForceSensor.GaugeVoltage = cat(1, obj.ForceSensor.GaugeVoltage, outData(:, 1:6));
+			obj.Accelerometer.GaugeVoltage = cat(1, obj.Accelerometer.GaugeVoltage, outData(:, 7:9));
 
 		end
 

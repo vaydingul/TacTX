@@ -11,13 +11,13 @@ classdef NIDevice < Device
 
     methods (Access = public)
 
-        function obj = NIDevice(name, channelName, measurementType, direction)
+        function obj = NIDevice(name, channelName, measurementType, direction, terminalConfig)
 
             obj.Name = name;
             obj.Channel = channelName;
             obj.MeasurementType = measurementType;
             obj.Direction = direction
-
+            obj.TerminalConfig = terminalConfig;
             obj.checkMeasurementType();
             obj.checkDirection();
         end
@@ -33,7 +33,7 @@ classdef NIDevice < Device
                 obj.addChannel(nidevice.Channel);
                 obj.addMeasurementType(nidevice.MeasurementType);
                 obj.addDirection(nidevice.Direction);
-
+                obj.addTerminalConfig(nidevice.TerminalConfig);
             end
 
         end
@@ -94,6 +94,32 @@ classdef NIDevice < Device
 
         end
 
+        function checkTerminalConfig(obj)
+
+            if ~iscell(obj.TerminalConfig)
+
+                if isstring(obj.TerminalConfig)
+
+                    obj.TerminalConfig = repmat({obj.TerminalConfig}, 1, length(obj.Channel))
+
+                else
+
+                    error("Terminal config should be either a single string or cell array.")
+
+                end
+
+            else
+
+                if length(obj.Channel) ~= length(obj.TerminalConfig)
+
+                    error("Number of channel names and terminal configs should be matched.")
+
+                end
+
+            end
+
+        end
+
         function addChannel(obj, channel)
 
             if isstring(channel)
@@ -126,6 +152,18 @@ classdef NIDevice < Device
                 obj.Direction = cat(2, obj.Direction, direction);
             else
                 error("Direction must be a string scalar or a  cell array.")
+            end
+
+        end
+
+        function addTerminalConfig(obj, terminalConfig)
+
+            if isstring(terminalConfig)
+                obj.TerminalConfig = cat(2, obj.TerminalConfig, {terminalConfig});
+            elseif iscell(terminalConfig)
+                obj.TerminalConfig = cat(2, obj.TerminalConfig, terminalConfig);
+            else
+                error("Terminal config must be a string scalar or a  cell array.")
             end
 
         end

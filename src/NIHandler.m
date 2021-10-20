@@ -6,7 +6,8 @@ classdef NIHandler < DAQHandler
         Mode
         Rate
         DataFormat
-        
+        DataAcqusitionObject
+
     end
     
     properties
@@ -16,11 +17,7 @@ classdef NIHandler < DAQHandler
         
     end
 
-    properties (Access = private)
-
-        DataAcqusitionObject
-        
-    end
+   
 
     methods (Access = public)
 
@@ -154,13 +151,14 @@ classdef NIHandler < DAQHandler
                 if strcmp(nidevice.Direction{k}, "Input")
 
                     addinput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
-                
+
                 elseif strcmp(nidevice.Direction{k}, "Output")
 
                     addoutput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
 
                 end
 
+                obj.DataAcqusitionObject.Channels(end).TerminalConfig = nidevice.TerminalConfig{k};
             end
 
         end
@@ -174,6 +172,8 @@ classdef NIHandler < DAQHandler
                     addinput(obj.DataAcqusitionObject, nidevice.Name, nidevice.Channel{k}, nidevice.MeasurementType{k});
 
                 end
+
+                obj.DataAcqusitionObject.Channels(end).TerminalConfig = nidevice.TerminalConfig{k};
 
             end
 
@@ -189,6 +189,8 @@ classdef NIHandler < DAQHandler
 
                 end
 
+                obj.DataAcqusitionObject.Channels(end).TerminalConfig = nidevice.TerminalConfig{k};
+                
             end
 
         end
