@@ -8,6 +8,13 @@ classdef SignalGenerator < Transducer
 		Repetition
 		Bias
 		Scale 
+		
+	end
+
+	properties
+
+		Buffer
+
 	end
 
 	methods (Access = public)
@@ -21,10 +28,10 @@ classdef SignalGenerator < Transducer
 								"SingleEnded");
 								
             obj.Repetition = 1;
-			obj.Bias = 1;
+			obj.Bias = 0;
 			obj.Scale = 1;                
 			obj.Signal = [];
-			
+			obj.Buffer = 1;
 			
             if ~isempty(varargin) && mod(nvarargin, 2) == 0
                 
@@ -53,6 +60,17 @@ classdef SignalGenerator < Transducer
             obj.process();
 		end
 
+		function set.Buffer(obj, buffer)
+
+			if buffer > length(obj.SignalProcessed)
+
+				buffer = 1;
+
+			end
+
+			obj.Buffer = buffer;
+
+		end
 	end
 
 end

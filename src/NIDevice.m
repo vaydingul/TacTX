@@ -52,11 +52,11 @@ classdef NIDevice < Device
 
                 if isstring(obj.MeasurementType)
 
-                    obj.MeasurementType = repmat({obj.MeasurementType}, 1, length(obj.Channel))
+                    obj.MeasurementType = repmat({obj.MeasurementType}, 1, length(obj.Channel));
 
                 else
 
-                    error("Measurement type should be either a single string or cell array.")
+                    error("Measurement type should be either a single string or cell array.");
 
                 end
 
@@ -64,7 +64,7 @@ classdef NIDevice < Device
 
                 if length(obj.Channel) ~= length(obj.MeasurementType)
 
-                    error("Number of channel names and measurement types should be matched.")
+                    error("Number of channel names and measurement types should be matched.");
 
                 end
 
@@ -78,11 +78,11 @@ classdef NIDevice < Device
 
                 if isstring(obj.Direction)
 
-                    obj.Direction = repmat({obj.Direction}, 1, length(obj.Channel))
+                    obj.Direction = repmat({obj.Direction}, 1, length(obj.Channel));
 
                 else
 
-                    error("Direction should be either a single string or cell array.")
+                    error("Direction should be either a single string or cell array.");
 
                 end
 
@@ -90,7 +90,7 @@ classdef NIDevice < Device
 
                 if length(obj.Channel) ~= length(obj.Direction)
 
-                    error("Number of channel names and directions should be matched.")
+                    error("Number of channel names and directions should be matched.");
 
                 end
 
@@ -104,11 +104,11 @@ classdef NIDevice < Device
 
                 if isstring(obj.TerminalConfig)
 
-                    obj.TerminalConfig = repmat({obj.TerminalConfig}, 1, length(obj.Channel))
+                    obj.TerminalConfig = repmat({obj.TerminalConfig}, 1, length(obj.Channel));
 
                 else
 
-                    error("Terminal config should be either a single string or cell array.")
+                    error("Terminal config should be either a single string or cell array.");
 
                 end
 
@@ -116,7 +116,7 @@ classdef NIDevice < Device
 
                 if length(obj.Channel) ~= length(obj.TerminalConfig)
 
-                    error("Number of channel names and terminal configs should be matched.")
+                    error("Number of channel names and terminal configs should be matched.");
 
                 end
 
@@ -131,7 +131,7 @@ classdef NIDevice < Device
             elseif iscell(channel)
                 obj.Channel = cat(2, obj.Channel, channel);
             else
-                error("Channel must be a string scalar or a  cell array.")
+                error("Channel must be a string scalar or a  cell array.");
             end
 
         end
@@ -143,7 +143,7 @@ classdef NIDevice < Device
             elseif iscell(measurementType)
                 obj.MeasurementType = cat(2, obj.MeasurementType, measurementType);
             else
-                error("Measurement type must be a string scalar or a  cell array.")
+                error("Measurement type must be a string scalar or a  cell array.");
             end
 
         end
@@ -155,7 +155,7 @@ classdef NIDevice < Device
             elseif iscell(direction)
                 obj.Direction = cat(2, obj.Direction, direction);
             else
-                error("Direction must be a string scalar or a  cell array.")
+                error("Direction must be a string scalar or a  cell array.");
             end
 
         end
@@ -167,7 +167,7 @@ classdef NIDevice < Device
             elseif iscell(terminalConfig)
                 obj.TerminalConfig = cat(2, obj.TerminalConfig, terminalConfig);
             else
-                error("Terminal config must be a string scalar or a  cell array.")
+                error("Terminal config must be a string scalar or a  cell array.");
             end
 
         end

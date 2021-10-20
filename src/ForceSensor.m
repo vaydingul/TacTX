@@ -30,9 +30,10 @@ classdef ForceSensor < Transducer
                     -11.5890942	-0.100412191	5.1181421	-10.5413148	6.505246556	10.32580521
                     0.136561278	-7.586013116	0.21378772	-7.246447361	-0.092033948	-7.061610822];
             
+            obj.GaugeVoltage = zeros(1, 6);
+
             obj.ForceTorque = zeros(1, 6);
 
-            obj.GaugeVoltage = zeros(1, 6);
             
             if ~isempty(varargin) && mod(nvarargin, 2) == 0
 

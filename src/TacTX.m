@@ -1,95 +1,106 @@
 classdef TacTX < handle
 
-	properties (Access = public)
-		
-		%Handler
-		%Transducer
-		%State
-		%Config
+    properties (Access = public)
 
-		NIHandler
-		MISCHandler
-		ForceSensor
-		Accelerometer
-		SignalGenerator
-		FingerTracker
+        %Handler
+        %Transducer
+        %State
+        %Config
 
-		State
-		Config
-	end
-	
-	methods (Access = public)
+        NIHandler
+        MISCHandler
+        ForceSensor
+        Accelerometer
+        SignalGenerator
+        FingerTracker
 
-		function obj = TacTX(varargin)
+        State
+        Config
+    end
 
-			%obj.Handler = {};
-			%obj.Transducer = {};
-			%obj.State = {};
-			%obj.Config = {};
-			
-			obj.NIHandler = NIHandler;
-			obj.MISCHandler = MISCHandler;
-			obj.ForceSensor = ForceSensor;
-			obj.Accelerometer = Accelerometer;
-			obj.SignalGenerator = SignalGenerator;
-			obj.FingerTracker = FingerTracker;
+    methods (Access = public)
+
+        function obj = TacTX(varargin)
+
+            %obj.Handler = {};
+            %obj.Transducer = {};
+            %obj.State = {};
+            %obj.Config = {};
+
+            obj.NIHandler = NIHandler();
+            obj.MISCHandler = MISCHandler();
+            obj.ForceSensor = ForceSensor();
+            obj.Accelerometer = Accelerometer();
+            obj.SignalGenerator = SignalGenerator();
+            obj.FingerTracker = FingerTracker();
 
             if ~isempty(varargin) && mod(nargin, 2) == 0
-                
+
                 for k = 1:2:nargin
-                    
+
                     obj.(varargin{k}) = varargin{k + 1};
-                    
+
                 end
-                
+
             end
-			
-			obj.NIHandler.ScansAvailableFunction =@(src, evt) obj.scansAvailableFunction(src, evt);
-			obj.NIHandler.ScansAvailableFunctionCount = 100;
-			
-			obj.match();
-			
-		end
 
-		function run(obj)
+            obj.NIHandler.ScansAvailableFunction = @(src, evt) obj.scansAvailableFunction(src, evt);
+            obj.NIHandler.ScansAvailableFunctionCount = 100;
 
-			obj.State.run(obj);
+            obj.NIHandler.ScansRequiredFunction = @(src, evt) obj.scansRequiredFunction(src, evt);
+            obj.NIHandler.ScansRequiredFunctionCount = 500;
 
-		end
+            obj.match();
 
-		function idle(obj)
+        end
 
-			obj.State.idle(obj);
+        function run(obj)
 
-		end
+            obj.State.run(obj);
 
-		function save(obj)
+        end
 
-			obj.State.save(obj);
+        function idle(obj)
 
-		end
+            obj.State.idle(obj);
 
-	end
+        end
 
-	methods (Access = private)
+        function save(obj)
 
-		function match(obj)
+            obj.State.save(obj);
 
-			obj.NIHandler.addDevice(obj.ForceSensor);
-			obj.NIHandler.addDevice(obj.Accelerometer);
-			obj.NIHandler.addDevice(obj.SignalGenerator);
-			obj.MISCHandler.Transducer = obj.FingerTracker;
+        end
 
-		end
+    end
 
-		function scansAvailableFunction(obj, ~, ~)
+    methods (Access = private)
 
-			outData = obj.NIHandler.read(100);
-			
-			obj.ForceSensor.GaugeVoltage = cat(1, obj.ForceSensor.GaugeVoltage, outData(:, 1:6));
-			obj.Accelerometer.GaugeVoltage = cat(1, obj.Accelerometer.GaugeVoltage, outData(:, 7:9));
+        function match(obj)
 
-		end
+            obj.NIHandler.addDevice(obj.ForceSensor);
+            obj.NIHandler.addDevice(obj.Accelerometer);
+            obj.NIHandler.addDevice(obj.SignalGenerator);
+            obj.MISCHandler.Transducer = obj.FingerTracker;
 
-	end
+        end
+
+        function scansAvailableFunction(obj, ~, ~)
+
+            outData = obj.NIHandler.read(obj.NIHandler.ScansAvailableFunctionCount);
+
+            obj.ForceSensor.GaugeVoltage = cat(1, obj.ForceSensor.GaugeVoltage, outData(:, 1:6));
+            obj.Accelerometer.GaugeVoltage = cat(1, obj.Accelerometer.GaugeVoltage, outData(:, 7:9));
+
+        end
+
+        function scansRequiredFunction(obj, ~, ~)
+
+            obj.NIHandler.write(obj.SignalGenerator.SignalProcessed(obj.SignalGenerator.Buffer:obj.SignalGenerator.Buffer + obj.NIHandler.ScansRequiredFunctionCount));
+            obj.SignalGenerator.Buffer = obj.SignalGenerator.Buffer + 500;
+
+        end
+
+    end
+
 end

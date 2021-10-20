@@ -1,10 +1,10 @@
 tactx = TacTX('State', IdleState);
-sgn = idinput([12705, 1], 'prbs', [0 1/5], [-3 3]);
+sgn = idinput([10000, 1], 'prbs', [0 1/5], [-3 3]);
 
 tactx.SignalGenerator.Signal = sgn;
 
 disp("NOW!");
-tactx.run()
+tactx.run();
 
 figure;
 plot(tactx.ForceSensor.ForceTorque);
