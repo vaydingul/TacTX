@@ -7,12 +7,16 @@ classdef IdleState < State
 		function run(obj, tactx)
 			
 			tactx.NIHandler.flush();
-			tactx.NIHandler.preload(tactx.SignalGenerator.SignalProcessed(1 : floor(length(tactx.SignalGenerator.SignalProcessed)/2)));
-			tactx.SignalGenerator.Buffer = tactx.SignalGenerator.Buffer + floor(length(tactx.SignalGenerator.SignalProcessed)/2);
+            
+            if tactx.Config.EXPERIMENT_MODE
+                
+                tactx.NIHandler.preload(tactx.SignalGenerator.SignalProcessed(1 : floor(length(tactx.SignalGenerator.SignalProcessed)/2)));
+                tactx.SignalGenerator.Buffer = tactx.SignalGenerator.Buffer + floor(length(tactx.SignalGenerator.SignalProcessed)/2);               
+                
+            end
 			
 			tactx.NIHandler.start("Continuous");
 			tactx.MISCHandler.start();
-
 			tactx.State = RunState();
 
 
@@ -26,11 +30,19 @@ classdef IdleState < State
 
 		end
 
-		function save(obj, tactx)
-
-			save('trial.mat', 'tactx');
+		function save(obj, tactx, varargin)
+            
+            if nargin > 2
+                
+                save(char(varargin{1}), 'tactx');
+                
+            else
+                
+                save('trial.mat', 'tactx');
+                
+            end
 			tactx.State = SaveState();
-
+    
 
 		end
 

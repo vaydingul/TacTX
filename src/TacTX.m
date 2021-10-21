@@ -1,11 +1,6 @@
-classdef TacTX < handle
+classdef TacTX < TacTX_
 
     properties (Access = public)
-
-        %Handler
-        %Transducer
-        %State
-        %Config
 
         NIHandler
         MISCHandler
@@ -16,16 +11,12 @@ classdef TacTX < handle
 
         State
         Config
+
     end
 
     methods (Access = public)
 
         function obj = TacTX(varargin)
-
-            %obj.Handler = {};
-            %obj.Transducer = {};
-            %obj.State = {};
-            %obj.Config = {};
 
             obj.NIHandler = NIHandler();
             obj.MISCHandler = MISCHandler();
@@ -43,12 +34,15 @@ classdef TacTX < handle
                 end
 
             end
+               
+            obj.NIHandler.Rate = obj.Config.SAMPLE_RATE;
+            obj.MISCHandler.Rate = obj.Config.SAMPLE_RATE;
 
             obj.NIHandler.ScansAvailableFunction = @(src, evt) obj.scansAvailableFunction(src, evt);
-            obj.NIHandler.ScansAvailableFunctionCount = 100;
+            obj.NIHandler.ScansAvailableFunctionCount = obj.Config.SCANS_AVAILABLE_FUNCTION_COUNT;
 
             obj.NIHandler.ScansRequiredFunction = @(src, evt) obj.scansRequiredFunction(src, evt);
-            obj.NIHandler.ScansRequiredFunctionCount = 1000;
+            obj.NIHandler.ScansRequiredFunctionCount = obj.Config.SCANS_REQUIRED_FUNCTION_COUNT;
 
             obj.organize();
 
@@ -66,23 +60,25 @@ classdef TacTX < handle
 
         end
 
-        function save(obj)
+        function save(obj, varargin)
 
-            obj.State.save(obj);
+            obj.State.save(obj, varargin);
 
         end
-
-    end
-
-    methods (Access = private)
 
         function organize(obj)
 
             obj.NIHandler.addDevice(obj.ForceSensor);
             obj.NIHandler.addDevice(obj.Accelerometer);
-            obj.NIHandler.addDevice(obj.SignalGenerator);
+
+            if obj.Config.EXPERIMENT_MODE
+
+                obj.NIHandler.addDevice(obj.SignalGenerator);
+
+            end
+
             obj.MISCHandler.Transducer = obj.FingerTracker;
-            
+
             obj.SignalGenerator.BufferStep = obj.NIHandler.ScansRequiredFunctionCount;
 
         end

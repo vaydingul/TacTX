@@ -19,7 +19,7 @@ classdef RunState < State
 
 		function save(obj, tactx)
 
-			save('trial.mat', 'tactx');
+			warning("TacTX is currently in the RUN state. To save the data, it should be switched to the IDLE state.")
 			tactx.State = SaveState();
 			
 		end

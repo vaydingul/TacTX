@@ -1,4 +1,5 @@
-tactx = TacTX('State', IdleState);
+init;
+tactx = TacTX('State', IdleState, 'Config', CONFIG);
 sgn = idinput([10000, 1], 'prbs', [0 1/5], [-3 3]);
 
 tactx.SignalGenerator.Signal = sgn;

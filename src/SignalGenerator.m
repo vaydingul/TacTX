@@ -65,7 +65,7 @@ classdef SignalGenerator < Transducer
 
 			if buffer + obj.BufferStep > length(obj.SignalProcessed) 
 
-				buffer = 1;
+				obj.SignalProcessed = repmat(obj.SignalProcessed, 2, 1);
 
 			end
 
