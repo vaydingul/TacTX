@@ -36,7 +36,7 @@ classdef TacTX < TacTX_
             end
                
             obj.NIHandler.Rate = obj.Config.SAMPLE_RATE;
-            obj.MISCHandler.Rate = obj.Config.SAMPLE_RATE;
+            obj.MISCHandler.Rate = floor(obj.Config.SAMPLE_RATE/10);
 
             obj.NIHandler.ScansAvailableFunction = @(src, evt) obj.scansAvailableFunction(src, evt);
             obj.NIHandler.ScansAvailableFunctionCount = obj.Config.SCANS_AVAILABLE_FUNCTION_COUNT;
