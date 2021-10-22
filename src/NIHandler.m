@@ -14,8 +14,7 @@ classdef NIHandler < DAQHandler
         
         ScansAvailableFunction
         ScansAvailableFunctionCount
-        ScansRequiredFunction
-        ScansRequiredFunctionCount
+
     end
 
    
@@ -141,19 +140,7 @@ classdef NIHandler < DAQHandler
 
         end
 
-        function set.ScansRequiredFunction(obj, functionHandle)
-
-            obj.ScansRequiredFunction = functionHandle;
-            obj.DataAcqusitionObject.ScansRequiredFcn = obj.ScansRequiredFunction;
-            
-        end
-
-        function set.ScansRequiredFunctionCount(obj, count)
-
-            obj.ScansRequiredFunctionCount = count;
-            obj.DataAcqusitionObject.ScansRequiredFcnCount = obj.ScansRequiredFunctionCount;
-
-        end
+        
 
     end
     

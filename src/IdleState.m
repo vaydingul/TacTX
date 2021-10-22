@@ -10,8 +10,7 @@ classdef IdleState < State
             
             if tactx.Config.EXPERIMENT_MODE
                 
-                tactx.NIHandler.preload(tactx.SignalGenerator.SignalProcessed(1 : floor(length(tactx.SignalGenerator.SignalProcessed)/2)));
-                tactx.SignalGenerator.Buffer = tactx.SignalGenerator.Buffer + floor(length(tactx.SignalGenerator.SignalProcessed)/2);               
+                tactx.NIHandler.preload(tactx.SignalGenerator.SignalProcessed);
                 
             end
 			

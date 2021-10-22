@@ -11,12 +11,6 @@ classdef SignalGenerator < Transducer
 		
 	end
 
-	properties
-
-		Buffer
-		BufferStep
-
-	end
 
 	methods (Access = public)
 
@@ -32,7 +26,6 @@ classdef SignalGenerator < Transducer
 			obj.Bias = 0;
 			obj.Scale = 1;                
 			obj.Signal = [];
-			obj.Buffer = 1;
 			
             if ~isempty(varargin) && mod(nvarargin, 2) == 0
                 
@@ -60,18 +53,7 @@ classdef SignalGenerator < Transducer
 			obj.Signal = signal;
             obj.process();
 		end
-
-		function set.Buffer(obj, buffer)
-
-			if buffer + obj.BufferStep > length(obj.SignalProcessed) 
-
-				obj.SignalProcessed = repmat(obj.SignalProcessed, 2, 1);
-
-			end
-
-			obj.Buffer = buffer;
-
-		end
+		
 	end
 
 end
