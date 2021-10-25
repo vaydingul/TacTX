@@ -4,7 +4,7 @@ classdef NIHandler < DAQHandler
 
         Interface
         Mode
-        Rate
+        
         DataFormat
         DataAcqusitionObject
 
@@ -14,7 +14,7 @@ classdef NIHandler < DAQHandler
         
         ScansAvailableFunction
         ScansAvailableFunctionCount
-
+        Rate
     end
 
    
@@ -122,6 +122,8 @@ classdef NIHandler < DAQHandler
 
         end
 
+
+
     end
 
     methods
@@ -140,6 +142,12 @@ classdef NIHandler < DAQHandler
 
         end
 
+        function set.Rate(obj, rate)
+
+            obj.Rate = rate;
+            obj.DataAcqusitionObject.Rate = rate;
+
+        end
         
 
     end

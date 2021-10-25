@@ -50,6 +50,11 @@ classdef ForceSensor < Transducer
         function process(obj)
 
             obj.ForceTorque = (obj.Gain * (obj.GaugeVoltage - obj.Bias)')';
+            angle = 60 % in degrees
+            transformationMatrix = [cosd(angle) sind(angle);
+                                    -sind(angle) cosd(angle)];
+            obj.ForceTorque(:, 1:2) = obj.ForceTorque(:, 1:2) * transformationMatrix';
+            obj.ForceTorque(:, 3) = -obj.ForceTorque(:, 3);
             obj.ForceTorque(:, 4:6) = obj.ForceTorque(:, 4:6) / 1000;
         end
 

@@ -7,6 +7,7 @@ classdef IdleState < State
 		function run(obj, tactx)
 			
 			tactx.NIHandler.flush();
+
             
             if tactx.Config.EXPERIMENT_MODE
                 
@@ -14,8 +15,8 @@ classdef IdleState < State
                 
             end
 			
-			tactx.NIHandler.start("Continuous");
-			tactx.MISCHandler.start();
+			tactx.NIHandler.start();
+			%tactx.MISCHandler.start();
 			tactx.State = RunState();
 
 
@@ -40,6 +41,11 @@ classdef IdleState < State
                 save('trial.mat', 'tactx');
                 
             end
+
+			tactx.ForceSensor.GaugeVoltage = zeros(1,6);
+			tactx.Accelerometer.GaugeVoltage = zeros(1,3);
+			tactx.ForceSensor.ForceTorque = zeros(1,6);
+			tactx.Accelerometer.Acceleration = zeros(1,3);
 			tactx.State = SaveState();
     
 

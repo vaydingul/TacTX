@@ -3,7 +3,7 @@ classdef TacTX < TacTX_
     properties (Access = public)
 
         NIHandler
-        MISCHandler
+        %MISCHandler
         ForceSensor
         Accelerometer
         SignalGenerator
@@ -19,7 +19,7 @@ classdef TacTX < TacTX_
         function obj = TacTX(varargin)
 
             obj.NIHandler = NIHandler();
-            obj.MISCHandler = MISCHandler();
+            %obj.MISCHandler = MISCHandler();
             obj.ForceSensor = ForceSensor();
             obj.Accelerometer = Accelerometer();
             obj.SignalGenerator = SignalGenerator();
@@ -36,7 +36,7 @@ classdef TacTX < TacTX_
             end
                
             obj.NIHandler.Rate = obj.Config.SAMPLE_RATE;
-            obj.MISCHandler.Rate = floor(obj.Config.SAMPLE_RATE/10);
+            %obj.MISCHandler.Rate = floor(obj.Config.SAMPLE_RATE/10);
 
             obj.NIHandler.ScansAvailableFunction = @(src, evt) obj.scansAvailableFunction(src, evt);
             obj.NIHandler.ScansAvailableFunctionCount = obj.Config.SCANS_AVAILABLE_FUNCTION_COUNT;
@@ -74,17 +74,19 @@ classdef TacTX < TacTX_
 
             end
 
-            obj.MISCHandler.Transducer = obj.FingerTracker;
+            %obj.MISCHandler.Transducer = obj.FingerTracker;
 
 
         end
 
-        function scansAvailableFunction(obj, ~, ~)
+        function [forceRead, accelerationRead] = scansAvailableFunction(obj, ~, ~)
 
             outData = obj.NIHandler.read(obj.NIHandler.ScansAvailableFunctionCount);
-
-            obj.ForceSensor.GaugeVoltage = cat(1, obj.ForceSensor.GaugeVoltage, outData(:, 1:6));
-            obj.Accelerometer.GaugeVoltage = cat(1, obj.Accelerometer.GaugeVoltage, outData(:, 7:9));
+            
+            forceRead = outData(:, 1:6);
+            accelerationRead = outData(:, 7:9);
+            obj.ForceSensor.GaugeVoltage = cat(1, obj.ForceSensor.GaugeVoltage, forceRead);
+            obj.Accelerometer.GaugeVoltage = cat(1, obj.Accelerometer.GaugeVoltage, accelerationRead);
 
         end
 
