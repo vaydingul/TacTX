@@ -1,102 +1,123 @@
 function config = generateConfigFile(config, varargin)
 
-	switch nargin - 1
-	case 1
+    switch nargin - 1
+        case 1
 
-		numberOfSlidings = varargin{1};
-		signalTypes = 1; 
-		normalForce = 0.5;
-		slidingVelocity = 4;
+            numberOfSlidings = varargin{1};
+            signalTypes = 1;
+            normalForce = 0.5;
+            slidingVelocity = 4;
 
-	case 2
+        case 2
 
-		numberOfSlidings = varargin{1};
-		signalTypes = varargin{2};
-		normalForce = 0.5;
-		slidingVelocity = 4;
+            numberOfSlidings = varargin{1};
+            signalTypes = varargin{2};
+            normalForce = 0.5;
+            slidingVelocity = 4;
 
-	case 3
+        case 3
 
-		numberOfSlidings = varargin{1};
-		signalTypes = varargin{2};
-		normalForce = varargin{3};
-		slidingVelocity = 4;
-		
-	case 4
+            numberOfSlidings = varargin{1};
+            signalTypes = varargin{2};
+            normalForce = varargin{3};
+            slidingVelocity = 4;
 
-		numberOfSlidings = varargin{1};
-		signalTypes = varargin{2};
-		normalForce = varargin{3};
-		slidingVelocity = varargin{4};
+        case 4
 
-	otherwise
+            numberOfSlidings = varargin{1};
+            signalTypes = varargin{2};
+            normalForce = varargin{3};
+            slidingVelocity = varargin{4};
 
-		numberOfSlidings = 1;
-		signalTypes = 1; 
-		normalForce = 0.5;
-		slidingVelocity = 4;
-		
-	end
+        otherwise
 
-	if length(signalTypes) == 1
+            numberOfSlidings = 1;
+            signalTypes = 1;
+            normalForce = 0.5;
+            slidingVelocity = 4;
 
-		signalTypes = signalTypes * ones(1, numberOfSlidings);
+    end
 
-	end
+    if length(signalTypes) == 1
 
-	if length(normalForce) == 1
+        signalTypes = signalTypes * ones(1, numberOfSlidings);
 
-		normalForce = normalForce * ones(1, numberOfSlidings);
+    end
 
-	end
+    if length(normalForce) == 1
 
-	if length(slidingVelocity) == 1
+        normalForce = normalForce * ones(1, numberOfSlidings);
 
-		slidingVelocity = slidingVelocity * ones(1, numberOfSlidings);
+    end
 
-	end
+    if length(slidingVelocity) == 1
 
-	signals = {};
-	for k = 1 : length(signalTypes)
+        slidingVelocity = slidingVelocity * ones(1, numberOfSlidings);
 
-		duration = config.
-		signal = generateSignal(signalTypes(k), signalSize);
-		signals{k} = signal;
+    end
 
-	end
+    signals = {};
 
+    for k = 1:length(signalTypes)
 
+        duration = config.SLIDING_DISTANCE / slidingVelocity(k);
+        signalSize = duration * config.SAMPLE_RATE;
+
+        signal = generateSignal(signalTypes(k), signalSize);
+        signals{k} = signal;
+
+    end
 
 end
 
-
 function signal = generateSignal(signalType, signalSize)
 
-	switch signalType
+    switch signalType
 
-	case 1
+        case 1
 
-	case 2
+            signal = [zeros(1, int16(signalSize / 2)), ...
+                    idinput([int16(signalSize / 2), 1], 'prbs', [0 1/100], [-3 3])];
 
-	case 3
+        case 2
 
-	case 4
+            signal = [idinput([int16(signalSize / 2), 1], 'prbs', [0 1/100], [-3 3]), ...
+                                                                        zeros(1, int16(signalSize / 2))];
 
-	case 5
+        case 3
 
-	case 6
+            signal = [zeros(1, int16(signalSize / 3)), ...
+                    idinput([int16(signalSize / 3), 1], 'prbs', [0 1/100], [-3 3]), ...
+                    zeros(1, int16(signalSize / 3))];
 
-	case 7
+        case 4
 
-	case 8
+            signal = [idinput([int16(signalSize / 3), 1], 'prbs', [0 1/100], [-3 3]), ...
+                                                                        zeros(1, int16(signalSize / 3)), ...
+                                                                        idinput([int16(signalSize / 3), 1], 'prbs', [0 1/100], [-3 3])];
 
+        case 5
 
-	otherwise
+            signal = [zeros(1, int16(signalSize / 6)), ...
+                    idinput([int16(signalSize / 6), 1], 'prbs', [0 1/100], [-3 3]), ...
+                    zeros(1, int16(signalSize / 6)), ...
+                    idinput([int16(signalSize / 6), 1], 'prbs', [0 1/100], [-3 3]), ...
+                    zeros(1, int16(signalSize / 6)), ...
+                    idinput([int16(signalSize / 6), 1], 'prbs', [0 1/100], [-3 3])];
 
-		error("Please input correct signal type!");
+        case 6
 
-	end
+            signal = [idinput([int16(signalSize / 6), 1], 'prbs', [0 1/100], [-3 3]), ...
+                                                                        zeros(1, int16(signalSize / 6)), ...
+                                                                        idinput([int16(signalSize / 6), 1], 'prbs', [0 1/100], [-3 3]), ...
+                                                                        zeros(1, int16(signalSize / 6)), ...
+                                                                        idinput([int16(signalSize / 6), 1], 'prbs', [0 1/100], [-3 3]), ...
+                                                                        zeros(1, int16(signalSize / 6))];
 
+        otherwise
 
+            error("Please input correct signal type!");
+
+    end
 
 end
