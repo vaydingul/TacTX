@@ -80,13 +80,13 @@ function signal = generateSignal(signalType, signalSize, prbsClockPeriod)
 
         case 1
 
-            signal = [zeros(1, int16(signalSize / 2)), ...
-                    idinput([int16(signalSize / 2), 1], 'prbs', [0 1/prbsClockPeriod], [-3 3])];
+            signal = [zeros(floor(signalSize / 2), 1); ...
+                    idinput([floor(signalSize / 2), 1], 'prbs', [0 1/prbsClockPeriod], [-3 3])];
 
         case 2
 
-            signal = [idinput([int16(signalSize / 2), 1], 'prbs', [0 1/prbsClockPeriod], [-3 3]), ...
-                                                                        zeros(1, int16(signalSize / 2))];
+            signal = [idinput([floor(signalSize / 2), 1], 'prbs', [0 1/prbsClockPeriod], [-3 3]); ...
+                                                                        zeros(floor(signalSize / 2), 1)];
 
         case 3
 
