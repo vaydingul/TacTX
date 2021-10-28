@@ -86,7 +86,7 @@ function signal = generateSignal(signalType, signalSize, prbsClockPeriod)
 
         case 2
 
-            signal = [idinput([floor(signalSize / 2), 1], 'rbs', [0 1/prbsClockPeriod], [-3 3]); ...
+            signal = [idinput([floor(signalSize / 2), 1], 'prbs', [0 1/prbsClockPeriod], [-3 3]); ...
                                                                         zeros(floor(signalSize / 2), 1)];
 
         case 3
