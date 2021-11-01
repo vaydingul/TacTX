@@ -63,7 +63,7 @@ for k = 1:length(signalTypes)
     duration = config.SLIDING_DISTANCE / slidingVelocity(k);
     time = 0:1/config.SAMPLE_RATE:duration;
     
-    signal = generateSignal(signalTypes(k), time, config.SIGNAL_PARAMETER_I, config.SIGNAL_PARAMETER_II);
+    signal = generateSignal(signalTypes(k), time, config.SIGNAL_PARAMETER_1, config.SIGNAL_PARAMETER_2);
     signals{k} = signal;
     
 end
@@ -82,7 +82,7 @@ switch signalType
     case 1
         
         signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * sine(2 * pi * frequency * time(1:floor(length(time) / 2)))];
+            amplitude * sin(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
         
     case 2
         
