@@ -87,12 +87,12 @@ switch signalType
     case 2
         
         signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * sawtooth(2 * pi * frequency * time(1:floor(length(time) / 2)))];
+            amplitude * sawtooth(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
         
     case 3
         
         signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * square(2 * pi * frequency * time(1:floor(length(time) / 2)))];
+            amplitude * square(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
         
     otherwise
         
