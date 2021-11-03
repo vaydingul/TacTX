@@ -25,9 +25,9 @@ classdef Accelerometer < Transducer
             obj.GaugeVoltage = zeros(1, 3);
             obj.Acceleration = zeros(1, 3);
 
-            if ~isempty(varargin) && mod(nvarargin, 2) == 0
+            if ~isempty(varargin) && mod(nargin, 2) == 0
 
-                for k = 1:2:nvarargin
+                for k = 1:2:nargin
 
                     obj.(varargin{k}) = varargin{k + 1};
 

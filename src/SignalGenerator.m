@@ -27,9 +27,9 @@ classdef SignalGenerator < Transducer
 			obj.Scale = 1;                
 			obj.Signal = [];
 			
-            if ~isempty(varargin) && mod(nvarargin, 2) == 0
+            if ~isempty(varargin) && mod(nargin, 2) == 0
                 
-                for k = 1:2:nvarargin
+                for k = 1:2:nargin
                     
                     obj.(varargin{k}) = varargin{k + 1};
                     
