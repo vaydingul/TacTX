@@ -4,7 +4,7 @@ classdef NIHandler < DAQHandler
 
         Interface
         Mode
-        Rate
+        
         DataFormat
         DataAcqusitionObject
 
@@ -14,8 +14,7 @@ classdef NIHandler < DAQHandler
         
         ScansAvailableFunction
         ScansAvailableFunctionCount
-        ScansRequiredFunction
-        ScansRequiredFunctionCount
+        Rate
     end
 
    
@@ -123,6 +122,8 @@ classdef NIHandler < DAQHandler
 
         end
 
+
+
     end
 
     methods
@@ -141,19 +142,13 @@ classdef NIHandler < DAQHandler
 
         end
 
-        function set.ScansRequiredFunction(obj, functionHandle)
+        function set.Rate(obj, rate)
 
-            obj.ScansRequiredFunction = functionHandle;
-            obj.DataAcqusitionObject.ScansRequiredFcn = obj.ScansRequiredFunction;
-            
-        end
-
-        function set.ScansRequiredFunctionCount(obj, count)
-
-            obj.ScansRequiredFunctionCount = count;
-            obj.DataAcqusitionObject.ScansRequiredFcnCount = obj.ScansRequiredFunctionCount;
+            obj.Rate = rate;
+            obj.DataAcqusitionObject.Rate = rate;
 
         end
+        
 
     end
     

@@ -21,7 +21,7 @@ classdef ForceSensor < Transducer
 
             
 
-            obj.Bias = [-2.163948669433594,0.639072265625000,-1.438094482421875,-2.276571655273437,-0.530919494628906,-0.380003662109375];
+            obj.Bias = [-2.232571105957031,0.835329589843750,-1.517652282714844,-2.010707702636719,-0.444149475097656,-0.132328796386719];
 
             obj.Gain = [-0.008988558	0.01636383	-0.016207209	1.709100556	-0.010353274	-1.714581856
                     0.064670016	-2.188230603	-0.010510775	0.972092909	-0.015269682	1.041792839
@@ -50,6 +50,11 @@ classdef ForceSensor < Transducer
         function process(obj)
 
             obj.ForceTorque = (obj.Gain * (obj.GaugeVoltage - obj.Bias)')';
+            angle = 60; % in degrees
+            transformationMatrix = [cosd(angle) sind(angle);
+                                    -sind(angle) cosd(angle)];
+            obj.ForceTorque(:, 1:2) = obj.ForceTorque(:, 1:2) * transformationMatrix';
+            obj.ForceTorque(:, 3) = -obj.ForceTorque(:, 3);
             obj.ForceTorque(:, 4:6) = obj.ForceTorque(:, 4:6) / 1000;
         end
 
