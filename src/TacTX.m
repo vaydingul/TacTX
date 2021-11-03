@@ -3,7 +3,7 @@ classdef TacTX < TacTX_
     properties (Access = public)
 
         NIHandler
-        %MISCHandler
+        MISCHandler
         ForceSensor
         Accelerometer
         SignalGenerator
