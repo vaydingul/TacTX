@@ -47,7 +47,7 @@ classdef TacTX < TacTX_
 
         function run(obj, varargin)
 
-            obj.State.run(obj, varargin);
+            obj.State.run(obj, varargin{:});
 
         end
 

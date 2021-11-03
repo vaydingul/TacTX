@@ -15,7 +15,7 @@ classdef IdleState < State
                 
             end
 			
-			tactx.NIHandler.start(varargin);
+			tactx.NIHandler.start(varargin{:});
 			
 			if tactx.Config.PRACTICE_MODE
 				

@@ -93,9 +93,9 @@ classdef NIHandler < DAQHandler
         end
 
         function start(obj, varargin)
-
+            
             start(obj.DataAcqusitionObject, varargin{:});
-
+           
         end
 
         function stop(obj)
