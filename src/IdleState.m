@@ -4,7 +4,7 @@ classdef IdleState < State
 
 	methods (Access = public)
 
-		function run(obj, tactx)
+		function run(obj, tactx, varargin)
 			
 			tactx.NIHandler.flush();
 
@@ -15,8 +15,14 @@ classdef IdleState < State
                 
             end
 			
-			tactx.NIHandler.start();
-			%tactx.MISCHandler.start();
+			tactx.NIHandler.start(varargin);
+			
+			if tactx.Config.PRACTICE_MODE
+				
+				tactx.MISCHandler.start();
+
+			end
+			
 			tactx.State = RunState();
 
 

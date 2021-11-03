@@ -19,7 +19,7 @@ classdef TacTX < TacTX_
         function obj = TacTX(varargin)
 
             obj.NIHandler = NIHandler();
-            %obj.MISCHandler = MISCHandler();
+            obj.MISCHandler = MISCHandler();
             obj.ForceSensor = ForceSensor();
             obj.Accelerometer = Accelerometer();
             obj.SignalGenerator = SignalGenerator();
@@ -36,7 +36,7 @@ classdef TacTX < TacTX_
             end
                
             obj.NIHandler.Rate = obj.Config.SAMPLE_RATE;
-            %obj.MISCHandler.Rate = floor(obj.Config.SAMPLE_RATE/10);
+            obj.MISCHandler.Rate = floor(obj.Config.SAMPLE_RATE/10);
 
             obj.NIHandler.ScansAvailableFunction = @(src, evt) obj.scansAvailableFunction(src, evt);
             obj.NIHandler.ScansAvailableFunctionCount = obj.Config.SCANS_AVAILABLE_FUNCTION_COUNT;
@@ -45,9 +45,9 @@ classdef TacTX < TacTX_
 
         end
 
-        function run(obj)
+        function run(obj, varargin)
 
-            obj.State.run(obj);
+            obj.State.run(obj, varargin);
 
         end
 
@@ -74,7 +74,7 @@ classdef TacTX < TacTX_
 
             end
 
-            %obj.MISCHandler.Transducer = obj.FingerTracker;
+            obj.MISCHandler.Transducer = obj.FingerTracker;
 
 
         end

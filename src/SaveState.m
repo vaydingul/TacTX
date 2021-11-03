@@ -8,7 +8,7 @@ classdef SaveState < State
 
 	methods (Access = public)
 
-		function run(obj, tactx)
+		function run(obj, tactx, ~)
 
 			warning("You should first switch to the IDLE state. You are being switched to the IDLE state.")
 			tactx.State = IdleState();

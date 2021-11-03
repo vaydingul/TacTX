@@ -3,7 +3,7 @@ classdef RunState < State
 	
 	methods (Access = public)
 
-		function run(obj, tactx)
+		function run(obj, tactx, ~)
 
 			warning("TacTX is currently in the RUN state.")
 			tactx.State = RunState();
