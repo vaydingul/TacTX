@@ -1,115 +1,115 @@
 function config = generateConfigFile(config, varargin)
 
-switch nargin - 1
-    case 1
-        
-        numberOfSlidings = varargin{1};
-        signalTypes = 1;
-        normalForce = 0.5;
-        slidingVelocity = 4;
-        
-    case 2
-        
-        numberOfSlidings = varargin{1};
-        signalTypes = varargin{2};
-        normalForce = 0.5;
-        slidingVelocity = 4;
-        
-    case 3
-        
-        numberOfSlidings = varargin{1};
-        signalTypes = varargin{2};
-        normalForce = varargin{3};
-        slidingVelocity = 4;
-        
-    case 4
-        
-        numberOfSlidings = varargin{1};
-        signalTypes = varargin{2};
-        normalForce = varargin{3};
-        slidingVelocity = varargin{4};
-        
-    otherwise
-        
-        numberOfSlidings = 1;
-        signalTypes = 1;
-        normalForce = 0.5;
-        slidingVelocity = 4;
-        
-end
+    switch nargin - 1
+        case 1
 
-if length(signalTypes) == 1
-    
-    signalTypes = signalTypes * ones(1, numberOfSlidings);
-    
-end
+            numberOfSlidings = varargin{1};
+            signalTypes = 1;
+            normalForce = 0.5;
+            slidingVelocity = 4;
 
-if length(normalForce) == 1
-    
-    normalForce = normalForce * ones(1, numberOfSlidings);
-    
-end
+        case 2
 
-if length(slidingVelocity) == 1
-    
-    slidingVelocity = slidingVelocity * ones(1, numberOfSlidings);
-    
-end
+            numberOfSlidings = varargin{1};
+            signalTypes = varargin{2};
+            normalForce = 0.5;
+            slidingVelocity = 4;
 
-if length(config.SIGNAL_PARAMETER_1) == 1
+        case 3
 
-    config.SIGNAL_PARAMETER_1 = config.SIGNAL_PARAMETER_1 * ones(1, numberOfSlidings);
+            numberOfSlidings = varargin{1};
+            signalTypes = varargin{2};
+            normalForce = varargin{3};
+            slidingVelocity = 4;
 
-end
+        case 4
 
-if length(config.SIGNAL_PARAMETER_2) == 1
+            numberOfSlidings = varargin{1};
+            signalTypes = varargin{2};
+            normalForce = varargin{3};
+            slidingVelocity = varargin{4};
 
-    config.SIGNAL_PARAMETER_2 = config.SIGNAL_PARAMETER_2 * ones(1, numberOfSlidings);
+        otherwise
 
-end
+            numberOfSlidings = 1;
+            signalTypes = 1;
+            normalForce = 0.5;
+            slidingVelocity = 4;
 
-signals = {};
+    end
 
-for k = 1:length(signalTypes)
-    
-    duration = config.SLIDING_DISTANCE / slidingVelocity(k);
-    time = 0:1/config.SAMPLE_RATE:duration;
-    
-    signal = generateSignal(signalTypes(k), time, config.SIGNAL_PARAMETER_1(k), config.SIGNAL_PARAMETER_2(k));
-    signals{k} = signal;
-    
-end
+    if length(signalTypes) == 1
 
-config.NUMBER_OF_SLIDINGS = numberOfSlidings;
-config.SIGNAL = signals;
-config.NORMAL_FORCE = normalForce;
-config.SLIDING_VELOCITY = slidingVelocity;
+        signalTypes = signalTypes * ones(1, numberOfSlidings);
+
+    end
+
+    if length(normalForce) == 1
+
+        normalForce = normalForce * ones(1, numberOfSlidings);
+
+    end
+
+    if length(slidingVelocity) == 1
+
+        slidingVelocity = slidingVelocity * ones(1, numberOfSlidings);
+
+    end
+
+    if length(config.SIGNAL_PARAMETER_1) == 1
+
+        config.SIGNAL_PARAMETER_1 = config.SIGNAL_PARAMETER_1 * ones(1, numberOfSlidings);
+
+    end
+
+    if length(config.SIGNAL_PARAMETER_2) == 1
+
+        config.SIGNAL_PARAMETER_2 = config.SIGNAL_PARAMETER_2 * ones(1, numberOfSlidings);
+
+    end
+
+    signals = {};
+
+    for k = 1:length(signalTypes)
+
+        duration = config.SLIDING_DISTANCE / slidingVelocity(k);
+        time = 0:1 / config.SAMPLE_RATE:duration;
+
+        signal = generateSignal(signalTypes(k), time, config.SIGNAL_PARAMETER_1(k), config.SIGNAL_PARAMETER_2(k));
+        signals{k} = signal;
+
+    end
+
+    config.NUMBER_OF_SLIDINGS = numberOfSlidings;
+    config.SIGNAL = signals;
+    config.NORMAL_FORCE = normalForce;
+    config.SLIDING_VELOCITY = slidingVelocity;
 
 end
 
 function signal = generateSignal(signalType, time, frequency, amplitude)
 
-switch signalType
-    
-    case 1
-        
-        signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * sin(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
-        
-    case 2
-        
-        signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * sawtooth(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
-        
-    case 3
-        
-        signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * square(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
-        
-    otherwise
-        
-        error("Please input correct signal type!");
-        
-end
+    switch signalType
+
+        case 1
+
+            signal = [zeros(floor(length(time) / 2), 1); ...
+                    amplitude * sin(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
+
+        case 2
+
+            signal = [zeros(floor(length(time) / 2), 1); ...
+                    amplitude * sawtooth(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
+
+        case 3
+
+            signal = [zeros(floor(length(time) / 2), 1); ...
+                    amplitude * square(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
+
+        otherwise
+
+            error("Please input correct signal type!");
+
+    end
 
 end
