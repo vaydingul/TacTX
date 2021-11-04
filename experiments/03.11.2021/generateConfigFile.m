@@ -81,18 +81,15 @@ switch signalType
     
     case 1
         
-        signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * sin(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
+        signal = amplitude * sin(2 * pi * frequency * time(1:length(time)))';
         
     case 2
         
-        signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * sawtooth(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
+        signal = amplitude * sawtooth(2 * pi * frequency * time(1:length(time)))';
         
     case 3
         
-        signal = [zeros(floor(length(time) / 2), 1);...
-            amplitude * square(2 * pi * frequency * time(1:floor(length(time) / 2)))'];
+        signal = amplitude * square(2 * pi * frequency * time(1:length(time)))';
         
     otherwise
         
