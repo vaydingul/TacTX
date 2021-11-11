@@ -102,11 +102,7 @@ function signal = generateSignal(signalType, time, frequency, amplitude)
         case 3
 
             signal = amplitude * square(2 * pi * frequency * time(1:length(time)))';
-        
-        case 4
-            
-            signal = idinput([length(time), 1], 'prbs', [0 1/frequency], [-amplitude amplitude]);
-        
+
         otherwise
 
             error("Please input correct signal type!");
