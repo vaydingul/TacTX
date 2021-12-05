@@ -24,16 +24,18 @@ class HapticData(torch.utils.data.Dataset):
 
 			self.mat_file = scipy.io.loadmat(os.path.join(self.data_path, data_file))
 
-			self.x.append(self.mat_file['signal'])
-			self.y.append(self.mat_file['normal_force'])
+			self.x.append(torch.Tensor(self.mat_file['signal']))
+			self.y.append(torch.Tensor(self.mat_file['normal_force']))
 
+		self.x = torch.vstack((self.x)).squeeze()
+		self.y = torch.vstack((self.y)).squeeze()
 		self.transform = transform
 
 	def __len__(self):
 		"""
 		
 		"""
-		return len(self.data_files)
+		return self.x.shape[0]
 
 	def __getitem__(self, idx):
 		"""
@@ -50,9 +52,10 @@ if __name__ == '__main__':
 	data_path = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/'
 	dataset = HapticData(data_path)
 	
-	dataloader = torch.utils.data.DataLoader(dataset, batch_size=10, shuffle=True)
+	dataloader = torch.utils.data.DataLoader(dataset, batch_size = 100, shuffle=False)
 
 	for i, data in enumerate(dataloader):
-		print(data)
+		x, y = data
+		print(x.shape, y.shape)
 		if i == 0:
 			break
