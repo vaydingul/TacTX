@@ -19,8 +19,9 @@ class TrialDataset(torch.utils.data.Dataset):
 
 		self.mat_file = scipy.io.loadmat(self.file_path)
 
-		self.y = torch.Tensor(self.mat_file['signal'])
+		self.y = torch.Tensor(self.mat_file['signal_save']).squeeze()
 		self.x = torch.Tensor(self.mat_file['normal_force'])
+		#self.x = torch.cat([torch.Tensor(self.mat_file['normal_force']), torch.Tensor(self.mat_file['tangential_force'])], dim=1)
 
 		
 		self.transform = transform
@@ -37,12 +38,23 @@ class TrialDataset(torch.utils.data.Dataset):
 		"""
 		x = self.x[idx:idx+self.sequence_length]
 		y = self.y[idx+int(math.ceil(self.sequence_length/2))-1]
+
 		sample = x, y
-		if self.transform:
-			sample = self.transform(sample)
+		
+		sample = self.preprocess(sample)
 		return sample
 
+	def preprocess(self, sample):
+		"""
+		
+		"""
+		x, y = sample
 
+		y = ((y + 150) / 300)
+
+		y = y.long()
+
+		return x, y
 
 class HapticDataset(torch.utils.data.Dataset):
 	"""

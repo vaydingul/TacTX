@@ -1,7 +1,6 @@
 import model
 import dataset_util
 from train import train
-
 from torch import nn
 import torch
 
@@ -20,12 +19,12 @@ if __name__ == '__main__':
 	DATA_PATH = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/'
 
 	# Batch size
-	BATCH_SIZE = 32
+	BATCH_SIZE = 5000
 	INPUT_SIZE = 1
-	OUTPUT_SIZE = 1
+	OUTPUT_SIZE = 2
 	NUM_LAYERS = 1
-	HIDDEN_SIZE = 128
-	SEQUENCE_LENGTH = 13
+	HIDDEN_SIZE = 256
+	SEQUENCE_LENGTH = 5
 
 	train_dataset, test_dataset = dataset_util.generate_datasets(DATA_PATH, sequence_length=SEQUENCE_LENGTH)
 
@@ -34,7 +33,7 @@ if __name__ == '__main__':
 	# Import network model
 	model = model.SysID(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE, NUM_LAYERS)
 
-	criterion = nn.MSELoss()
+	criterion = nn.CrossEntropyLoss()
 	optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 	

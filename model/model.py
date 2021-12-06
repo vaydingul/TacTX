@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from tqdm import tqdm
-
+from torch import autograd
 class SysID(nn.Module):
 
 
@@ -11,30 +11,30 @@ class SysID(nn.Module):
 		self.hidden_size = hidden_size
 		self.output_size = output_size
 		self.num_layers = num_layers
-		self.rnn = nn.RNN(input_size, hidden_size, num_layers, batch_first=True, dropout=dropout)
+
+		self.rnn = nn.RNN(input_size, hidden_size, num_layers, batch_first=True, dropout=dropout, nonlinearity='relu')
 		self.fc = nn.Sequential(
 			nn.Linear(hidden_size, int(hidden_size/2)),
 			nn.Linear(int(hidden_size/2), int(hidden_size/4)),
-			nn.Linear(int(hidden_size/4), output_size)
+			nn.Linear(int(hidden_size/4), output_size),
+			nn.Sigmoid()
 		)
 
 
-	def forward(self, x, hidden):
 
-		
-		
-		#batch_size = x.size(0)
-		#hidden = self.init_hidden(batch_size)
+	def forward(self, x):
 
-		out, hidden = self.rnn(x, hidden)
+
+		out, self.hidden = self.rnn(x, self.hidden)
 		out = self.fc(out[:, -1, :])
 
-		return out, hidden
+		return out
 
 
-	def init_hidden(self, batch_size):
-		return torch.zeros(self.num_layers, batch_size, self.hidden_size)
-	
+	def init_hidden(self, batch_size, device):
+		
+		self.hidden = torch.zeros(self.num_layers, batch_size, self.hidden_size).to(device)
+
 	def generate_dummy_input_output(self, batch_size, seq_len):
 		return torch.randn(batch_size, seq_len, self.input_size), torch.randn(batch_size, self.output_size)
 		
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 	batch_size = 20
 	seq_len = 3
 
-	net = Network(input_size, hidden_size, output_size, num_layers)
+	net = SysID(input_size, hidden_size, output_size, num_layers)
 	net.train()
 		
 
