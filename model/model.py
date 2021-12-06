@@ -49,17 +49,17 @@ if __name__ == '__main__':
 
 	net = Network(input_size, hidden_size, output_size, num_layers)
 	net.train()
-	
 		
 
 	criterion = nn.MSELoss()
 	optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
-	pbar = tqdm(range(100000))
+	pbar = tqdm(range(1000))
 
 	for _ in pbar:
 		
 		
 		x, y = net.generate_dummy_input_output(batch_size, seq_len)
+	
 		optimizer.zero_grad()
 		output = net(x)
 		loss = criterion(output, y)
