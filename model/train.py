@@ -1,40 +1,53 @@
 import torch
 import torch.functional as F
-import tqdm
-from . import dataset_util
-from . import model_util
+from tqdm import trange, tqdm
 
-def train(model, device, train_loader, optimizer, epoch):
+def train(model, device, dataset, criterion, optimizer, batch_size, epoch):
+	model.to(device)
 	model.train()
-	pbar = tqdm.tqdm(train_loader)
+
+	pbar = tqdm(range(epoch))
+	
 	correct = 0
 	processed = 0
-	for batch_idx, (data, target) in enumerate(pbar):
-		# get samples
-		data, target = data.to(device), target.to(device)
 
-		# Init
-		optimizer.zero_grad()
-		# In PyTorch, we need to set the gradients to zero before starting to do backpropragation because PyTorch accumulates the gradients on subsequent backward passes. 
-		# Because of this, when you start your training loop, ideally you should zero out the gradients so that you do the parameter update correctly.
+	for epoch_idx in pbar:
 
-		# Predict
-		y_pred = model(data)
 
-		# Calculate loss
-		loss = F.nll_loss(y_pred, target)
-		# PyTorch auto-differentiates the loss w.r.t. the parameters of the model for us, so we just need to call backward() to do the job.
+		for trial_idx, (train_trial) in enumerate(dataset):
+			# get data loader for trial
+			train_trial_loader = torch.utils.data.DataLoader(train_trial, batch_size = batch_size, shuffle=False)
 
-		# Backpropagation
-		loss.backward()
-		optimizer.step()
 
-		# Update pbar-tqdm
-		pred = y_pred.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-		correct += pred.eq(target.view_as(pred)).sum().item()
-		processed += len(data)
+			hidden_ = model.init_hidden(batch_size).to(device)
+			for batch_idx, (data, target) in enumerate(train_trial_loader):
 
-		pbar.set_description(desc= f'Loss={loss.item()} Batch_id={batch_idx} Accuracy={100*correct/processed:0.2f}')
+				data, target = data.to(device), target.to(device)
+
+				# Init
+				optimizer.zero_grad()
+				# In PyTorch, we need to set the gradients to zero before starting to do backpropragation because PyTorch accumulates the gradients on subsequent backward passes. 
+				# Because of this, when you start your training loop, ideally you should zero out the gradients so that you do the parameter update correctly.
+
+				# Predict
+				
+				
+				y_pred, _ = model(data, hidden_)
+
+				# Calculate loss
+				loss = criterion(y_pred, target)
+				# PyTorch auto-differentiates the loss w.r.t. the parameters of the model for us, so we just need to call backward() to do the job.
+
+				# Backpropagation
+				loss.backward()
+				optimizer.step()
+
+				# Update pbar-tqdm
+				pred = y_pred.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
+				correct += pred.eq(target.view_as(pred)).sum().item()
+				processed += len(data)
+
+				pbar.set_description(desc= f'Loss={loss.item()} Epoch = {epoch_idx} Batch_idx={batch_idx} Trial_idx={trial_idx} Accuracy={100*correct/processed:0.2f}')
 
 
 def evaluate(model, device, test_loader):

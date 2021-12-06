@@ -2,11 +2,11 @@ import torch
 import torch.nn as nn
 from tqdm import tqdm
 
-class Network(nn.Module):
+class SysID(nn.Module):
 
 
 	def __init__(self, input_size, hidden_size, output_size, num_layers, dropout=0.5):
-		super(Network, self).__init__()
+		super(SysID, self).__init__()
 		self.input_size = input_size
 		self.hidden_size = hidden_size
 		self.output_size = output_size
@@ -19,16 +19,17 @@ class Network(nn.Module):
 		)
 
 
-	def forward(self, x):
+	def forward(self, x, hidden):
 
 		
 		
-		batch_size = x.size(0)
-		hidden = self.init_hidden(batch_size)
+		#batch_size = x.size(0)
+		#hidden = self.init_hidden(batch_size)
 
 		out, hidden = self.rnn(x, hidden)
 		out = self.fc(out[:, -1, :])
-		return out
+
+		return out, hidden
 
 
 	def init_hidden(self, batch_size):

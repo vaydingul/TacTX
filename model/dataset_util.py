@@ -4,7 +4,6 @@ import os
 import numpy as np
 import scipy.io
 import torch
-import array
 
 class TrialDataset(torch.utils.data.Dataset):
 	"""
@@ -20,8 +19,8 @@ class TrialDataset(torch.utils.data.Dataset):
 
 		self.mat_file = scipy.io.loadmat(self.file_path)
 
-		self.y = torch.Tensor(self.mat_file['signal']).squeeze()
-		self.x = torch.Tensor(self.mat_file['normal_force']).squeeze()
+		self.y = torch.Tensor(self.mat_file['signal'])
+		self.x = torch.Tensor(self.mat_file['normal_force'])
 
 		
 		self.transform = transform
@@ -37,7 +36,7 @@ class TrialDataset(torch.utils.data.Dataset):
 		
 		"""
 		x = self.x[idx:idx+self.sequence_length]
-		y = self.y[idx+math.ceil(self.sequence_length/2)]
+		y = self.y[idx+int(math.ceil(self.sequence_length/2))-1]
 		sample = x, y
 		if self.transform:
 			sample = self.transform(sample)
