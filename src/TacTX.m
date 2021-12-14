@@ -90,6 +90,20 @@ classdef TacTX < TacTX_
 
         end
 
+        function biasForceSensor(obj)
+
+            obj.run();
+            pause(1.0);
+            obj.idle();
+            obj.ForceSensor.Bias = mean(obj.ForceSensor.GaugeVoltage, 1);
+            obj.save('biasing.mat');
+            pause(1.0);
+            obj.idle();
+
+
+
+        end
+
         
 
     end
