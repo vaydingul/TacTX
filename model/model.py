@@ -47,32 +47,31 @@ class SysID_MLP(nn.Module):
         self.num_layers = num_layers
         self.hidden_size = hidden_size
 
-        #self.fc = nn.Sequential()
+        self.fc = nn.Sequential()
+        self.fc.add_module('fc{}'.format(1), nn.Linear(self.input_size, self.hidden_size))
+        self.fc.add_module('relu{}'.format(1), nn.ReLU())
+        self.fc.add_module('dropout{}'.format(1), nn.Dropout(p=dropout))
 
-        #self.fc.add_module('fc{}'.format(1), nn.Linear(self.input_size, self.hidden_size))
-        #self.fc.add_module('relu{}'.format(1), nn.ReLU())
-        #self.fc.add_module('dropout{}'.format(1), nn.Dropout(p=dropout))
-
-        #for k in range(2, self.num_layers):
-        #    
-        #    self.fc.add_module('fc{}'.format(k), nn.Linear(int(self.hidden_size / (2 ** (k-2))), int(self.hidden_size / (2 ** (k-1)))))
-        #    self.fc.add_module('relu{}'.format(k), nn.ReLU())
-        #    self.fc.add_module('dropout{}'.format(k), nn.Dropout(p=dropout))
-
-        #self.fc.add_module('fc{}'.format(self.num_layers), nn.Linear(int(self.hidden_size / (2 ** (self.num_layers-2))), self.output_size))
-
-        self.fc = nn.Sequential(
-            nn.Linear(self.input_size, self.hidden_size),
-            nn.ReLU(),
-            nn.Dropout(p=dropout))
-            
         for k in range(2, self.num_layers):
-
-            self.fc.add_module('fc{}'.format(k), nn.Linear(self.hidden_size, self.hidden_size))
+            
+            self.fc.add_module('fc{}'.format(k), nn.Linear(int(self.hidden_size / (2 ** (k-2))), int(self.hidden_size / (2 ** (k-1)))))
             self.fc.add_module('relu{}'.format(k), nn.ReLU())
             self.fc.add_module('dropout{}'.format(k), nn.Dropout(p=dropout))
-            
-        self.fc.add_module('fc{}'.format(num_layers), nn.Linear(self.hidden_size, self.output_size))
+        
+        self.fc.add_module('fc{}'.format(self.num_layers), nn.Linear(int(self.hidden_size / (2 ** (self.num_layers-2))), self.output_size))
+
+        #self.fc = nn.Sequential(
+        #    nn.Linear(self.input_size, self.hidden_size),
+        #    nn.ReLU(),
+        #    nn.Dropout(p=dropout))
+        #    
+        #for k in range(2, self.num_layers):
+#
+        #    self.fc.add_module('fc{}'.format(k), nn.Linear(self.hidden_size, self.hidden_size))
+        #    self.fc.add_module('relu{}'.format(k), nn.ReLU())
+        #    self.fc.add_module('dropout{}'.format(k), nn.Dropout(p=dropout))
+        #    
+        #self.fc.add_module('fc{}'.format(num_layers), nn.Linear(self.hidden_size, self.output_size))
         
 
     def forward(self, x):

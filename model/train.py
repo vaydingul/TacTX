@@ -4,6 +4,7 @@ from tqdm import trange, tqdm
 
 
 def train(model, device, train_loader, criterion, optimizer, batch_size, epoch, network_type):
+    
     model.to(device)
     model.train()
 
@@ -19,7 +20,7 @@ def train(model, device, train_loader, criterion, optimizer, batch_size, epoch, 
         for trial_idx, (train_trial) in enumerate(train_loader):
             # get data loader for trial
             train_trial_loader = torch.utils.data.DataLoader(
-                train_trial, batch_size=batch_size, shuffle=True, drop_last=False)
+                train_trial, batch_size=batch_size, shuffle=False, drop_last=False)
 
             
 
@@ -67,7 +68,7 @@ def evaluate(model, device, test_loader, criterion, batch_size):
         for trial_idx, (test_trial) in enumerate(test_loader):
             # get data loader for trial
             test_trial_loader = torch.utils.data.DataLoader(
-                test_trial, batch_size=batch_size, shuffle=True, drop_last=False)
+                test_trial, batch_size=batch_size, shuffle=False, drop_last=False)
 
             
             for batch_idx, (data, target) in enumerate(test_trial_loader):

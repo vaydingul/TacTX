@@ -23,9 +23,10 @@ class TrialDataset(torch.utils.data.Dataset):
 
             mat_file = scipy.io.loadmat(self.file_path)
 
-            #self.x = torch.Tensor(self.mat_file['normal_force'])
-            self.x = torch.cat([torch.Tensor(mat_file['normal_force'].astype('float32')), torch.Tensor(
-                mat_file['tangential_force'].astype('float32'))], dim=1).to(torch.float32)
+            self.x = torch.Tensor(mat_file['normal_force'].astype('float32')).to(torch.float32)
+            
+            #self.x = torch.cat([torch.Tensor(mat_file['normal_force'].astype('float32')), torch.Tensor(
+            #    mat_file['tangential_force'].astype('float32'))], dim=1).to(torch.float32)
 
             self.y = torch.Tensor(mat_file['signal_save'].astype(
                 'float32')).squeeze().to(torch.float32)
