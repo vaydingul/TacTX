@@ -75,7 +75,7 @@ for k = 1:length(signalTypes)
     duration = config.SLIDING_DISTANCE / slidingVelocity(k);
     time = 0:1/config.SAMPLE_RATE:duration;
     
-    signal = generateSignal(signalTypes(k), time, config.SIGNAL_PARAMETER_1(k), config.SIGNAL_PARAMETER_2(k), config.SAMPLE_RATE);
+    signal = generateSignal(signalTypes(k), time, config.SIGNAL_PARAMETER_1(k), config.SIGNAL_PARAMETER_2(k));
     signals{k} = signal;
     
 end
@@ -87,7 +87,7 @@ config.SLIDING_VELOCITY = slidingVelocity;
 
 end
 
-function signal = generateSignal(signalType, time, frequency, amplitude, sampleRate)
+function signal = generateSignal(signalType, time, frequency, amplitude)
 
 switch signalType
     
@@ -105,7 +105,9 @@ switch signalType
 
     case 4
 
-        signal = idinput([length(time), 1], 'rgs', [0 1/frequency], [-amplitude amplitude]);
+        %signal = idinput([length(time), 1], 'rbs', [0 1/frequency], [-amplitude amplitude]);
+        signal = [zeros(floor(length(time)/2), 1); idinput([floor(length(time)/2), 1], 'rbs', [0 1/frequency], [-amplitude amplitude])];
+
     otherwise
         
         error("Please input correct signal type!");
