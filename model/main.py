@@ -21,15 +21,15 @@ if __name__ == '__main__':
     DATA_PATH = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/asd/'
 
     # Batch size
-    BATCH_SIZE = 10000
+    BATCH_SIZE = 7500
     INPUT_SIZE = 1
     OUTPUT_SIZE = 2
-    NUM_LAYERS = 4
+    NUM_LAYERS = 6
     HIDDEN_SIZE = 128
-    SEQUENCE_LENGTH = 128
+    SEQUENCE_LENGTH = 256
     NUM_EPOCHS = 20
     NETWORK_TYPE = 'mlp'
-    DROPOUT = 0.
+    DROPOUT = 0.3
     CONCAT_ALL = False
 
     train_dataset, test_dataset = dataset_util.generate_datasets(
@@ -58,8 +58,8 @@ if __name__ == '__main__':
     criterion_train = nn.CrossEntropyLoss(reduction='mean')
     criterion_test = nn.CrossEntropyLoss(reduction='sum')
     #optimizer = torch.optim.Adam(model_.parameters(), lr=0.01, betas=(0.9, 0.999), eps=1e-08, weight_decay=1e-4, amsgrad=False)
-    optimizer = torch.optim.Adam(
-        model_.parameters(), lr=5e-3,  weight_decay=0.000001)
+    optimizer = torch.optim.RMSprop(
+        model_.parameters(), lr=5e-3)
     iter = 0
 
     print(model_)

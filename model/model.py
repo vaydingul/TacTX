@@ -59,7 +59,7 @@ class SysID_MLP(nn.Module):
             self.fc.add_module('dropout{}'.format(k), nn.Dropout(p=dropout))
         
         self.fc.add_module('fc{}'.format(self.num_layers), nn.Linear(int(self.hidden_size / (2 ** (self.num_layers-2))), self.output_size))
-
+        self.fc.add_module('relu{}'.format(self.num_layers), nn.ReLU())
         #self.fc = nn.Sequential(
         #    nn.Linear(self.input_size, self.hidden_size),
         #    nn.ReLU(),
