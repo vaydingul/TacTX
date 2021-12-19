@@ -1,9 +1,9 @@
 import torch
 import torch.functional as F
 from tqdm import trange, tqdm
+from colorama import Fore, Style
 
-
-def train(model, device, train_loader, criterion, optimizer, batch_size, epoch, network_type):
+def train(model, device, train_loader, criterion, optimizer, batch_size, epoch):
     
     model.to(device)
     model.train()
@@ -20,7 +20,7 @@ def train(model, device, train_loader, criterion, optimizer, batch_size, epoch, 
         for trial_idx, (train_trial) in enumerate(train_loader):
             # get data loader for trial
             train_trial_loader = torch.utils.data.DataLoader(
-                train_trial, batch_size=batch_size, shuffle=False, drop_last=False)
+                train_trial, batch_size=batch_size, shuffle=True, drop_last=False)
 
             
 
@@ -47,14 +47,15 @@ def train(model, device, train_loader, criterion, optimizer, batch_size, epoch, 
                 optimizer.step()
 
                 # Update pbar-tqdm
-                pred = torch.nn.functional.softmax(y_pred, dim=1).argmax(
-                    dim=1, keepdim=True)  # get the index of the max log-probability
+                #pred = torch.nn.functional.softmax(y_pred, dim=1).argmax(
+                #    dim=1, keepdim=True)  # get the index of the max log-probability
+                pred = y_pred.argmax(dim=1, keepdim=True)
                 correct += pred.eq(target.view_as(pred)).sum().item()
                 processed += len(data)
                 accuracy = 100. * correct / processed
 
-            pbar.set_description(
-                desc=f'Loss={loss.item():0.2f} Epoch = {epoch_idx+1} Trial_idx={trial_idx} Accuracy={accuracy:0.2f}')
+                pbar.set_description(
+                    desc=f'Loss={loss.item():.2f} Epoch = {epoch_idx+1} Trial_idx={trial_idx} Batch_idx={batch_idx} Accuracy={accuracy:.2f}')
 
 
 def evaluate(model, device, test_loader, criterion, batch_size):
@@ -68,7 +69,7 @@ def evaluate(model, device, test_loader, criterion, batch_size):
         for trial_idx, (test_trial) in enumerate(test_loader):
             # get data loader for trial
             test_trial_loader = torch.utils.data.DataLoader(
-                test_trial, batch_size=batch_size, shuffle=False, drop_last=False)
+                test_trial, batch_size=batch_size, shuffle=True, drop_last=False)
 
             
             for batch_idx, (data, target) in enumerate(test_trial_loader):
@@ -79,12 +80,13 @@ def evaluate(model, device, test_loader, criterion, batch_size):
                 test_loss += criterion(output, target).item()
                 # get the index of the max log-probability
                 pred = output.argmax(dim=1, keepdim=True)
+                print(Fore.CYAN, sum(pred), pred.shape)
                 correct += pred.eq(target.view_as(pred)).sum().item()
 
                 batch_counter += data.shape[0]
 
     test_loss /= batch_counter
 
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
+    print(Fore.MAGENTA, '\nTest set: Average loss: {:.2f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
         test_loss, correct, batch_counter,
         100. * correct / batch_counter))

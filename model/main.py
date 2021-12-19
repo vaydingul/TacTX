@@ -7,6 +7,7 @@ import torch
 import os
 import numpy as np
 import time
+from colorama import Fore, Style
 if __name__ == '__main__':
 
     if torch.cuda.is_available():
@@ -21,15 +22,15 @@ if __name__ == '__main__':
     DATA_PATH = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/asd/'
 
     # Batch size
-    BATCH_SIZE = 7500
+    BATCH_SIZE = 972
     INPUT_SIZE = 1
     OUTPUT_SIZE = 2
-    NUM_LAYERS = 6
-    HIDDEN_SIZE = 128
-    SEQUENCE_LENGTH = 256
-    NUM_EPOCHS = 20
+    NUM_LAYERS = 7
+    HIDDEN_SIZE = 256
+    SEQUENCE_LENGTH = 31
+    NUM_EPOCHS = 100
     NETWORK_TYPE = 'mlp'
-    DROPOUT = 0.3
+    DROPOUT = 0.
     CONCAT_ALL = False
 
     train_dataset, test_dataset = dataset_util.generate_datasets(
@@ -50,6 +51,7 @@ if __name__ == '__main__':
 
         model_ = model.SysID_RNN(INPUT_SIZE, HIDDEN_SIZE,
                                  OUTPUT_SIZE, NUM_LAYERS, dropout=DROPOUT)
+
     else:
 
         print('Invalid network type')
@@ -57,17 +59,17 @@ if __name__ == '__main__':
 
     criterion_train = nn.CrossEntropyLoss(reduction='mean')
     criterion_test = nn.CrossEntropyLoss(reduction='sum')
-    #optimizer = torch.optim.Adam(model_.parameters(), lr=0.01, betas=(0.9, 0.999), eps=1e-08, weight_decay=1e-4, amsgrad=False)
-    optimizer = torch.optim.RMSprop(
-        model_.parameters(), lr=5e-3)
+    optimizer = torch.optim.Adam(
+        model_.parameters(), lr=5e-4, weight_decay=1e-5)
     iter = 0
 
     print(model_)
-    time.sleep(3)
+    time.sleep(1)
+
     while True:
 
         train(model=model_, device=device, train_loader=train_dataset_loader, criterion=criterion_train,
-              optimizer=optimizer, batch_size=BATCH_SIZE, epoch=NUM_EPOCHS, network_type=NETWORK_TYPE)
+              optimizer=optimizer, batch_size=BATCH_SIZE, epoch=NUM_EPOCHS)
 
         evaluate(model=model_, device=device, test_loader=test_dataset_loader,
                  criterion=criterion_test, batch_size=BATCH_SIZE)

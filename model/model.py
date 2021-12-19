@@ -59,7 +59,7 @@ class SysID_MLP(nn.Module):
             self.fc.add_module('dropout{}'.format(k), nn.Dropout(p=dropout))
         
         self.fc.add_module('fc{}'.format(self.num_layers), nn.Linear(int(self.hidden_size / (2 ** (self.num_layers-2))), self.output_size))
-        self.fc.add_module('relu{}'.format(self.num_layers), nn.ReLU())
+        #self.fc.add_module('relu{}'.format(self.num_layers), nn.ReLU())
         #self.fc = nn.Sequential(
         #    nn.Linear(self.input_size, self.hidden_size),
         #    nn.ReLU(),
@@ -97,6 +97,15 @@ def save_criterion(criterion, path):
 def load_criterion(criterion, path):
     criterion.load_state_dict(torch.load(path))
 
+def save(model, optimizer, criterion, path):
+    save_model(model, path + 'model.pt')
+    save_optimizer(optimizer, path + 'optimizer.pt')
+    save_criterion(criterion, path + 'criterion.pt')
+
+def load(model, optimizer, criterion, path):
+    load_model(model, path + 'model.pt')
+    load_optimizer(optimizer, path + 'optimizer.pt')
+    load_criterion(criterion, path + 'criterion.pt')
 
 if __name__ == '__main__':
 
@@ -107,7 +116,7 @@ if __name__ == '__main__':
     batch_size = 20
     seq_len = 3
 
-    net = SysID(input_size, hidden_size, output_size, num_layers)
+    net = SysID_MLP(input_size, hidden_size, output_size, num_layers)
     net.train()
 
     criterion = nn.MSELoss()
