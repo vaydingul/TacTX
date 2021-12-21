@@ -11,7 +11,7 @@ class TrialDataset(torch.utils.data.Dataset):
 
     """
 
-    def __init__(self, file_path, sequence_length=5, network_type='rnn'):
+    def __init__(self, file_path, x_data, y_data, sequence_length=5, network_type='rnn'):
         """
 
         """
@@ -19,41 +19,41 @@ class TrialDataset(torch.utils.data.Dataset):
         self.sequence_length = sequence_length
         self.network_type = network_type
 
-        if type(self.file_path) is not list:
+        if type(self.file_path) is not np.ndarray:
 
-            mat_file = scipy.io.loadmat(self.file_path)
+            mat_file = scipy.io.loadmat(str(self.file_path))
 
-            self.x = torch.Tensor(mat_file['normal_force'].astype('float32')).to(torch.float32)
             
-            #self.x = torch.cat([torch.Tensor(mat_file['normal_force'].astype('float32')), torch.Tensor(
-            #    mat_file['tangential_force'].astype('float32'))], dim=1).to(torch.float32)
+            self.x = torch.cat([torch.Tensor(mat_file[x].astype('float32')) for x in x_data], dim=1).to(torch.float32)
 
-            self.y = torch.Tensor(mat_file['signal_save'].astype(
-                'float32')).squeeze().to(torch.float32)
+            self.y = torch.Tensor(mat_file[y_data].astype('float32')).to(torch.float32).squeeze()
+
 
         else:
             
-            self.x = torch.zeros((len(self.file_path),))
-            self.y = torch.zeros((len(self.file_path),))
+            self.x = torch.zeros(0,)
+            self.y = torch.zeros(0,)
 
             for (ix, file) in enumerate(self.file_path):
 
                 mat_file = scipy.io.loadmat(file)
-                x = torch.cat([torch.Tensor(mat_file['normal_force'].astype('float32')), torch.Tensor(
-                    self.mat_file['tangential_force'].astype('float32'))], dim=1).to(torch.float32)
 
-                y = torch.Tensor(mat_file['signal_save'].astype(
-                    'float32')).squeeze().to(torch.float32)
+                x = torch.cat([torch.Tensor(mat_file[x_].astype('float32')) for x_ in x_data], dim=1).to(torch.float32)
 
-                self.x[ix] = x
-                self.y[ix] = y
+                y = torch.Tensor(mat_file[y_data].astype('float32')).to(torch.float32).squeeze()
+
+
+                self.x = torch.cat([self.x, x], dim=0)
+                self.y = torch.cat([self.y, y], dim=0)
+
+        pass
 
 
     def __len__(self):
         """
 
         """
-        return self.x.shape[0] - self.sequence_length + 1
+        return self.y.shape[0] - self.sequence_length + 1
 
     def __getitem__(self, idx):
         """
@@ -88,11 +88,13 @@ class HapticDataset(torch.utils.data.Dataset):
 
     """
 
-    def __init__(self, data_files, sequence_length=5, network_type='rnn', concat_all = False):
+    def __init__(self, data_files, x_data, y_data, sequence_length=5, network_type='rnn', concat_all = False):
         """
 
         """
         self.data_files = data_files
+        self.x_data = x_data
+        self.y_data = y_data
         self.sequence_length = sequence_length
         self.network_type = network_type
         self.concat_all = concat_all
@@ -115,13 +117,13 @@ class HapticDataset(torch.utils.data.Dataset):
         """
         if not self.concat_all:
             
-            return TrialDataset(self.data_files[idx], sequence_length=self.sequence_length, network_type=self.network_type)
+            return TrialDataset(self.data_files[idx], x_data = self.x_data, y_data = self.y_data, sequence_length=self.sequence_length, network_type=self.network_type)
 
         else:
 
-            return TrialDataset(self.data_files, sequence_length=self.sequence_length, network_type=self.network_type)
+            return TrialDataset(self.data_files, x_data = self.x_data, y_data = self.y_data, sequence_length=self.sequence_length, network_type=self.network_type)
 
-def generate_datasets(data_path, train_test_split=0.8, sequence_length=5, network_type='rnn', concat_all = False):
+def generate_datasets(data_path, x_data = ["normal_force"], y_data = "signal_save", train_test_split=0.8, sequence_length=5, network_type='rnn', concat_all = False):
     """
 
     """
@@ -134,9 +136,9 @@ def generate_datasets(data_path, train_test_split=0.8, sequence_length=5, networ
     test_files = random_data_files[int(train_test_split*number_of_files):]
 
     train_dataset = HapticDataset(
-        train_files, sequence_length=sequence_length, network_type=network_type, concat_all=concat_all)
+        train_files, x_data = x_data, y_data = y_data, sequence_length=sequence_length, network_type=network_type, concat_all=concat_all)
     test_dataset = HapticDataset(
-        test_files, sequence_length=sequence_length, network_type=network_type, concat_all=concat_all)
+        test_files, x_data = x_data, y_data = y_data, sequence_length=sequence_length, network_type=network_type, concat_all=concat_all)
 
     return train_dataset, test_dataset
     test_dataset = HapticDataset(

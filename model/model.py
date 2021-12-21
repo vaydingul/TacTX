@@ -13,17 +13,19 @@ class SysID_RNN(nn.Module):
         self.output_size = output_size
         self.num_layers = num_layers
 
+
         self.rnn = nn.RNN(input_size, hidden_size, num_layers,
                           batch_first=True, dropout=dropout, nonlinearity='relu')
-        # self.fc = nn.Sequential(
-        #	nn.Linear(hidden_size, int(hidden_size/2)),
-        #	nn.Linear(int(hidden_size/2), int(hidden_size/4)),
-        #	nn.Linear(int(hidden_size/4), output_size)
-        # )
-        self.fc = nn.Linear(hidden_size, output_size)
+        self.fc = nn.Sequential(
+    	nn.Linear(hidden_size, int(hidden_size/2)),
+    	nn.Linear(int(hidden_size/2), int(hidden_size/4)),
+    	nn.Linear(int(hidden_size/4), output_size)
+        )
+        #self.fc = nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
 
+        #out = self.bn1(x)
         out, _ = self.rnn(x, self.init_hidden(x.size(0), x.device))
         out = self.fc(out[:, -1, :])
 
@@ -48,15 +50,21 @@ class SysID_MLP(nn.Module):
         self.hidden_size = hidden_size
 
         self.fc = nn.Sequential()
+        
         self.fc.add_module('fc{}'.format(1), nn.Linear(self.input_size, self.hidden_size))
+        self.fc.add_module('bn1', nn.BatchNorm1d(self.hidden_size))
         self.fc.add_module('relu{}'.format(1), nn.ReLU())
-        self.fc.add_module('dropout{}'.format(1), nn.Dropout(p=dropout))
+        #self.fc.add_module('dropout{}'.format(1), nn.Dropout(p=dropout))
 
         for k in range(2, self.num_layers):
             
             self.fc.add_module('fc{}'.format(k), nn.Linear(int(self.hidden_size / (2 ** (k-2))), int(self.hidden_size / (2 ** (k-1)))))
+            if k == 2:
+
+                self.fc.add_module('bn{}'.format(k), nn.BatchNorm1d(int(self.hidden_size / (2 ** (k-1)))))
+            
             self.fc.add_module('relu{}'.format(k), nn.ReLU())
-            self.fc.add_module('dropout{}'.format(k), nn.Dropout(p=dropout))
+            #self.fc.add_module('dropout{}'.format(k), nn.Dropout(p=dropout))
         
         self.fc.add_module('fc{}'.format(self.num_layers), nn.Linear(int(self.hidden_size / (2 ** (self.num_layers-2))), self.output_size))
         #self.fc.add_module('relu{}'.format(self.num_layers), nn.ReLU())
@@ -96,6 +104,13 @@ def save_criterion(criterion, path):
 
 def load_criterion(criterion, path):
     criterion.load_state_dict(torch.load(path))
+
+def save_history(train_loss, train_acc, test_loss, test_acc, path):
+    torch.save((train_loss, train_acc, test_loss, test_acc), path)
+
+def load_history(path):
+    return torch.load(path)
+
 
 def save(model, optimizer, criterion, path):
     save_model(model, path + 'model.pt')
