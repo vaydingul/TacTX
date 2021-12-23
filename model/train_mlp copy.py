@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     # Load the dataset
     #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/dfg/'
-    args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Berke_PRBS_Response_Dataset/dataset/'
+    args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Berke_RBS_Response_Dataset/dataset/'
     args['BATCH_SIZE'] = 70000
     args['INPUT_SIZE'] = 1
     args['OUTPUT_SIZE'] = 2
