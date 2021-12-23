@@ -122,6 +122,18 @@ def load(model, optimizer, criterion, path):
     load_optimizer(optimizer, path + 'optimizer.pt')
     load_criterion(criterion, path + 'criterion.pt')
 
+def save_checkpoint(model, optimizer, criterion_train, criterion_test, path, args):
+    state = {
+        'model': model.state_dict(),
+        'optimizer': optimizer.state_dict(),
+        'criterion_train': criterion_train.state_dict(),
+        'criterion_test': criterion_test.state_dict(),
+        'args' : args
+    }
+
+    torch.save(state, path)
+
+
 if __name__ == '__main__':
 
     input_size = 6

@@ -32,6 +32,7 @@ if __name__ == '__main__':
     NUM_LAYERS = 2
     HIDDEN_SIZE = 256
     SEQUENCE_LENGTH = 511
+    LEARNING_RATE = 5e-4
     NUM_EPOCHS = 1
     NUM_TRAINING = 100
     DOWNLOAD_PER_ITER = NUM_EPOCHS * NUM_TRAINING
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     criterion_train = nn.CrossEntropyLoss(reduction='mean')
     criterion_test = nn.CrossEntropyLoss(reduction='sum')
     optimizer = torch.optim.Adam(
-        model_.parameters(), lr=5e-3, weight_decay=1e-4)
+        model_.parameters(), lr=LEARNING_RATE, weight_decay=1e-4)
 
     iter = 0
 
