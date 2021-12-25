@@ -144,7 +144,6 @@ classdef TacTX < TacTX_
 
             for k = 1:length(forceTorque)
 
-                ax = subplot(sublotRow, subplotCol, cnt);
 
                 if strcmp(ixs, 'all')
 
@@ -156,8 +155,8 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, cnt);
-                axs[cnt] = ax;
+                ax = subplot(subplotRow, subplotCol, 2*cnt-1);
+                axs(cnt) = ax;
 
                 plot(obj.ForceSensor.ForceTorque(ix, forceTorque(k)));
                 title(['Force Sensor ' num2str(forceTorque(k))]);
@@ -166,7 +165,6 @@ classdef TacTX < TacTX_
 
             for k = 1:length(accelerometer)
 
-                ax = subplot(subplotRow, subplotCol, cnt);
 
                 if strcmp(ixs, 'all')
 
@@ -178,15 +176,14 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, cnt);
-                axs[cnt] = ax;
+                ax = subplot(subplotRow, subplotCol, 2*cnt-1);
+                axs(cnt) = ax;
 
                 plot(obj.Accelerometer.Acceleration(ix, accelerometer(k)));
                 title(['Accelerometer ' num2str(accelerometer(k))]);
                 cnt = cnt + 1;
             end
 
-            ax = subplot(subplotRow, subplotCol, cnt);
 
             if strcmp(ixs, 'all')
 
@@ -198,18 +195,18 @@ classdef TacTX < TacTX_
 
             end
 
-            ax = subplot(subplotRow, subplotCol, cnt);
-            axs[cnt] = ax;
+            ax = subplot(subplotRow, subplotCol, 2*cnt-1);
+            axs(cnt) = ax;
 
             plot(obj.SignalGenerator.SignalProcessed(ix));
             title(['Signal']);
             cnt = cnt + 1;
 
             if isFftRequired
-
+                
+                cnt = 1;
                 for k = 1:length(forceTorque)
 
-                    ax = subplot(sublotRow, subplotCol, cnt);
 
                     if strcmp(ixs, 'all')
 
@@ -221,8 +218,8 @@ classdef TacTX < TacTX_
 
                     end
 
-                    ax = subplot(subplotRow, subplotCol, cnt);
-                    axs[cnt] = ax;
+                    ax = subplot(subplotRow, subplotCol, 2*cnt);
+                    axs(cnt) = ax;
 
                     [f, w] = fft_data(obj.ForceSensor.ForceTorque(ix, forceTorque(k)), obj.Config.SAMPLE_RATE);
                     stem(log10(f), w);
@@ -232,7 +229,6 @@ classdef TacTX < TacTX_
 
                 for k = 1:length(accelerometer)
 
-                    ax = subplot(subplotRow, subplotCol, cnt);
 
                     if strcmp(ixs, 'all')
 
@@ -244,15 +240,14 @@ classdef TacTX < TacTX_
 
                     end
 
-                    ax = subplot(subplotRow, subplotCol, cnt);
-                    axs[cnt] = ax;
+                    ax = subplot(subplotRow, subplotCol, 2*cnt);
+                    axs(cnt) = ax;
                     [f, w] = fft_data(obj.Accelerometer.Acceleration(ix, accelerometer(k)), obj.Config.SAMPLE_RATE);
                     stem(log10(f), w);
                     title(['FFT Accelerometer ' num2str(accelerometer(k))]);
                     cnt = cnt + 1;
                 end
 
-                ax = subplot(subplotRow, subplotCol, cnt);
 
                 if strcmp(ixs, 'all')
 
@@ -264,14 +259,16 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, cnt);
-                axs[cnt] = ax;
+                ax = subplot(subplotRow, subplotCol, 2*cnt);
+                axs(cnt) = ax;
                 [f, w] = fft_data(obj.SignalGenerator.SignalProcessed(ix), obj.Config.SAMPLE_RATE);
                 stem(log10(f), w)
                 title(['Signal']);
                 cnt = cnt + 1;
 
             end
+
+            linkaxes(axs, 'x');
 
         end
 
