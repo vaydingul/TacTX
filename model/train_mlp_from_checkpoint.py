@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
         if np.mod(iter, args['DOWNLOAD_PER_ITER']) == 0:
 
-            dir_name = './model/' + datetime.today().strftime('%Y-%m-%d-%H:%M:%S') +  '_model_' + args['NETWORK_TYPE'] + '_' + str(iter)
+            dir_name = './model/' + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') +  '_model_' + args['NETWORK_TYPE'] + '_' + str(iter)
             path = dir_name + '/'
             try:
 
