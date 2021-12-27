@@ -155,7 +155,7 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, 2*cnt-1);
+                ax = subplot(subplotRow, subplotCol, 2*cnt-1 + ~isFftRequired*(+1-cnt));
                 axs1(cnt) = ax;
 
                 plot(obj.ForceSensor.ForceTorque(ix, forceTorque(k)));
@@ -176,7 +176,7 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, 2*cnt-1);
+                ax = subplot(subplotRow, subplotCol, 2*cnt-1 + ~isFftRequired*(+1-cnt));
                 axs1(cnt) = ax;
 
                 plot(obj.Accelerometer.Acceleration(ix, accelerometer(k)));
@@ -195,7 +195,7 @@ classdef TacTX < TacTX_
 
             end
 
-            ax = subplot(subplotRow, subplotCol, 2*cnt-1);
+            ax = subplot(subplotRow, subplotCol, 2*cnt-1 + ~isFftRequired*(+1-cnt));
             axs1(cnt) = ax;
 
             plot(obj.SignalGenerator.SignalProcessed(ix));
