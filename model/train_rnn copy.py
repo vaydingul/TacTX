@@ -27,16 +27,16 @@ if __name__ == '__main__':
     #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Berke_RBS_Response_Dataset/dataset/'
     args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/28.12.2021_New_Setup_Volkan_Modulated_RBS_Response_Dataset/dataset'
 
-    args['BATCH_SIZE'] = 20000
+    args['BATCH_SIZE'] = 800
     args['INPUT_SIZE'] = 4
     args['OUTPUT_SIZE'] = 2
-    args['NUM_LAYERS'] = 11
-    args['HIDDEN_SIZE'] = 2048
-    args['SEQUENCE_LENGTH'] = 512
+    args['NUM_LAYERS'] = 2
+    args['HIDDEN_SIZE'] = 256
+    args['SEQUENCE_LENGTH'] = 127
     args['NUM_EPOCHS'] = 1
-    args['NUM_TRAINING'] = 100
+    args['NUM_TRAINING'] = 2
     args['DOWNLOAD_PER_ITER'] = args['NUM_EPOCHS'] *args['NUM_TRAINING']
-    args['NETWORK_TYPE'] = 'mlp'
+    args['NETWORK_TYPE'] = 'rnn'
     args['DROPOUT'] = 0.
     args['ANIMATE'] = True
     args['CONCAT_ALL'] = True
@@ -62,8 +62,8 @@ if __name__ == '__main__':
     args['OPTIMIZER'] = torch.optim.Adam
     args['OPTIMIZER_PARAMETERS'] = {'lr': args['LEARNING_RATE'], 'weight_decay': 1e-4}
     
-    assert args['INPUT_SIZE'] == len(args['X_DATA'])
-    assert args['OUTPUT_SIZE'] == args['NUM_CLASSES']
+    assert args['INPUT_SIZE'] == len(args['X_DATA']), "INPUT_SIZE and X_DATA must be the same length"
+    assert args['OUTPUT_SIZE'] == args['NUM_CLASSES'], "OUTPUT_SIZE and NUM_CLASSES must be the same length"
 
 
     train_dataset, test_dataset = dataset_util.generate_datasets(
@@ -80,8 +80,8 @@ if __name__ == '__main__':
     # Select network model
     
 
-    model_ = model.SysID_MLP(
-        args['INPUT_SIZE'] * args['SEQUENCE_LENGTH'], args['HIDDEN_SIZE'], args['NUM_LAYERS'], args['OUTPUT_SIZE'], dropout=args['DROPOUT'])
+    model_ = model.SysID_RNN(
+        args['INPUT_SIZE'], args['HIDDEN_SIZE'], args['OUTPUT_SIZE'], args['NUM_LAYERS'], dropout=args['DROPOUT'])
 
 
     criterion_train = args['TRAIN_CRITERION_LOSS_FUNCTION'](**args['TRAIN_CRITERION_PARAMETERS'])

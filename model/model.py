@@ -14,8 +14,8 @@ class SysID_RNN(nn.Module):
         self.num_layers = num_layers
 
 
-        self.rnn = nn.RNN(input_size, hidden_size, num_layers,
-                          batch_first=True, dropout=dropout, nonlinearity='relu')
+        self.rnn = nn.LSTM(input_size, hidden_size, num_layers,
+                          batch_first=True, dropout=dropout)#, nonlinearity='relu')
         self.fc = nn.Sequential(
     	nn.Linear(hidden_size, int(hidden_size/2)),
     	nn.Linear(int(hidden_size/2), int(hidden_size/4)),
