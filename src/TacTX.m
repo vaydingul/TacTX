@@ -68,7 +68,7 @@ classdef TacTX < TacTX_
             obj.NIHandler.addDevice(obj.ForceSensor);
             obj.NIHandler.addDevice(obj.Accelerometer);
 
-            if obj.Config.EXPERIMENT_MODE
+            if obj.Config.EXPERIMENT_MODE && ~isempty(obj.SignalGenerator)
 
                 obj.NIHandler.addDevice(obj.SignalGenerator);
 
@@ -91,7 +91,7 @@ classdef TacTX < TacTX_
 
         function biasForceSensor(obj)
 
-            obj.run();
+            obj.run('NumScans', 1000);
             pause(1.0);
             obj.idle();
             obj.ForceSensor.Bias = mean(obj.ForceSensor.GaugeVoltage, 1);

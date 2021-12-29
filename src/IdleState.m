@@ -9,7 +9,7 @@ classdef IdleState < State
 			tactx.NIHandler.flush();
 
             
-            if tactx.Config.EXPERIMENT_MODE
+            if tactx.Config.EXPERIMENT_MODE && ~isempty(tactx.SignalGenerator)
                 
                 tactx.NIHandler.preload(tactx.SignalGenerator.SignalProcessed);
                 
