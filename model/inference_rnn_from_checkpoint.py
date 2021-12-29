@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 
-    main_folder = "2021-12-29-02-26-16/"
+    main_folder = "2021-12-29-02-26-16_rnn/"
     model_folder = "model_rnn_16/"
     checkpoint_path = "/home/vaydingul20/Documents/RML/TacTX/model/" + main_folder + model_folder + "/checkpoint.pt"
 
@@ -70,6 +70,8 @@ if __name__ == '__main__':
     
     print(model_)
     time.sleep(1)
+
+
     model_.to(args['device'])
     predicted, target = inference_one_random_sample(model = model_, device = args['device'], test_loader = test_dataset_loader, batch_size = 2000)
     plt.figure()
