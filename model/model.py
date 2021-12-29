@@ -6,7 +6,7 @@ from torch import autograd
 
 class SysID_RNN(nn.Module):
 
-    def __init__(self, input_size, hidden_size, output_size, num_layers, dropout=0.5):
+    def __init__(self, rnn_type, rnn_parameters, input_size, hidden_size, output_size, num_layers, dropout=0.5):
         super(SysID_RNN, self).__init__()
         self.input_size = input_size
         self.hidden_size = hidden_size
@@ -14,8 +14,8 @@ class SysID_RNN(nn.Module):
         self.num_layers = num_layers
 
 
-        self.rnn = nn.LSTM(input_size, hidden_size, num_layers,
-                          batch_first=True, dropout=dropout)#, nonlinearity='relu')
+        self.rnn = rnn_type(input_size, hidden_size, num_layers,
+                          batch_first=True, dropout=dropout, **rnn_parameters)
         self.fc = nn.Sequential(
     	nn.Linear(hidden_size, int(hidden_size/2)),
     	nn.Linear(int(hidden_size/2), int(hidden_size/4)),

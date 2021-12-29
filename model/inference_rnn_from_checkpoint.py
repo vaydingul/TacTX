@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
 
     main_folder = "2021-12-29-02-26-16_rnn/"
-    model_folder = "model_rnn_16/"
+    model_folder = "model_rnn_8/"
     checkpoint_path = "/home/vaydingul20/Documents/RML/TacTX/model/" + main_folder + model_folder + "/checkpoint.pt"
 
     state = torch.load(checkpoint_path)
@@ -30,7 +30,6 @@ if __name__ == '__main__':
         print(k, ' -> ', v)
 
     exit()
-
     if torch.cuda.is_available():
 
         args['device'] = 'cuda:0'
@@ -52,7 +51,7 @@ if __name__ == '__main__':
     # Select network model
     
 
-    model_ = model.SysID_RNN(
+    model_ = model.SysID_RNN(args['RNN_TYPE'], args['RNN_PARAMETERS'],
         args['INPUT_SIZE'], args['HIDDEN_SIZE'], args['OUTPUT_SIZE'], args['NUM_LAYERS'], dropout=args['DROPOUT'])
 
 
@@ -80,33 +79,4 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    """
-    while True:
-
-        if args['ANIMATE']:
-
-            args['train_loss_data'], args['train_acc_data'], args['test_loss_data'], args['test_acc_data'] =animate_train_evaluate(model = model_, device = args['device'], train_loader = train_dataset_loader, test_loader = test_dataset_loader, criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size = args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'], num_training=args['NUM_TRAINING'])
-            iter += args['NUM_EPOCHS'] * args['NUM_TRAINING']
-
-        else:
-
-            train_evaluate(model = model_, device = args['device'], train_loader = train_dataset_loader, test_loader = test_dataset_loader, criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size = args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'])
-            iter += args['NUM_EPOCHS']
-        
-
-        if np.mod(iter, args['DOWNLOAD_PER_ITER']) == 0:
-
-            dir_name = './model/' + datetime.today().strftime('%Y-%m-%d-%H:%M:%S') +  '_model_' + args['NETWORK_TYPE'] + '_' + str(iter)
-            path = dir_name + '/'
-            try:
-
-                os.mkdir(path)
-
-            except FileExistsError:
-
-                print('Directory already exists')
-
-          
-            model.save_checkpoint(model_, optimizer, criterion_train, criterion_test, path = path + "checkpoint.pt",
-            args = args)
-    """
+   
