@@ -107,7 +107,7 @@ def evaluate(model, device, test_loader, criterion, batch_size):
 
 
 
-def inference_one_random_sample(model, device, test_loader):
+def inference_one_random_sample(model, device, test_loader, batch_size = 1000):
     
     model.eval()
 
@@ -122,7 +122,7 @@ def inference_one_random_sample(model, device, test_loader):
                 # get data loader for trial
 
                     test_trial_loader = torch.utils.data.DataLoader(
-                        test_trial, batch_size=1000, shuffle=False, drop_last=False)
+                        test_trial, batch_size=batch_size, shuffle=False, drop_last=False)
                     len_test_trial_loader = len(test_trial_loader)
                     idx_batch = np.random.randint(0, len_test_trial_loader)
                     

@@ -58,10 +58,10 @@ if __name__ == '__main__':
 
     iter = 0
 
-    model_.load_state_dict(state['model_state_dict'])
-    optimizer.load_state_dict(state['optimizer_state_dict'])
-    criterion_train.load_state_dict(state['criterion_train_state_dict'])
-    criterion_test.load_state_dict(state['criterion_test_state_dict'])
+    model_.load_state_dict(state['model'])
+    optimizer.load_state_dict(state['optimizer'])
+    criterion_train.load_state_dict(state['criterion_train'])
+    criterion_test.load_state_dict(state['criterion_test'])
     
     print(model_)
     time.sleep(1)
