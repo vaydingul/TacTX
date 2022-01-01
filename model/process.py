@@ -142,19 +142,22 @@ def inference_one_trial(model, device, test_trial_loader):
 
     model.eval()
 
+    data = torch.zeros(0,).to(device)
     pred = torch.zeros(0, ).to(device)
-    
+    target = torch.zeros(0,).to(device)
     with torch.no_grad():
 
-        for batch_idx, (data, target) in enumerate(test_trial_loader):
+        for batch_idx, (data_, target_) in enumerate(test_trial_loader):
                             
 
-            data, _ = data.to(device), target.to(device)
-            output = model(data)
+            data_, target_ = data_.to(device), target_.to(device)
+            output = model(data_)
             # get the index of the max log-probability
             pred = torch.cat([pred, output.argmax(dim=1, keepdim=True)], dim = 0)
+            data = torch.cat([data, data_], dim = 0)
+            target = torch.cat([target, target_], dim = 0)
 
-    return pred
+    return data, target, pred
 
 def train_evaluate(model, device, train_loader, test_loader, criterion_train, criterion_test, optimizer, batch_size, epoch):
 

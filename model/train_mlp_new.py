@@ -26,7 +26,6 @@ if __name__ == '__main__':
     #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/dfg/'
     #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Berke_RBS_Response_Dataset/dataset/'
     args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/28.12.2021_New_Setup_Volkan_Modulated_RBS_Response_Dataset/dataset'
-    args['MODEL_SAVE_PATH'] = './model/' + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + '/'
 
     args['BATCH_SIZE'] = 20000
     args['INPUT_SIZE'] = 4
@@ -47,6 +46,9 @@ if __name__ == '__main__':
     args['NUM_CLASSES'] = 2
     #args['X_DATA'] = ['normal_force']
     #args['Y_DATA'] = 'signal_save'
+
+    args['MODEL_SAVE_PATH'] = './model/' + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + \
+        '_' + args['NETWORK_TYPE'] + '/'
 
     args['TRAIN_TEST_SPLIT'] = 0.8
     args['TRAIN_DATASET_LOADER_SHUFFLE'] = True
@@ -70,16 +72,11 @@ if __name__ == '__main__':
     train_dataset, test_dataset = dataset_util.generate_datasets(
         data_path = args['DATA_PATH'], x_data = args['X_DATA'], y_data = args['Y_DATA'], sequence_length=args['SEQUENCE_LENGTH'], num_class = args['NUM_CLASSES'], network_type=args['NETWORK_TYPE'], concat_all=args['CONCAT_ALL'], train_test_split=args['TRAIN_TEST_SPLIT'])
 
-    #train_dataset, test_dataset = dataset_util.generate_datasets(
-    #    data_path=DATA_PATH, x_data = ["forceX_", "forceZ_", "accelerationX_", "accelerationZ_"], y_data = "signal_", sequence_length=SEQUENCE_LENGTH, network_type=NETWORK_TYPE, concat_all=CONCAT_ALL, train_test_split=0.8)
-
     train_dataset_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args['TRAIN_DATASET_LOADER_BATCH_SIZE'], shuffle=args['TRAIN_DATASET_LOADER_SHUFFLE'])
     test_dataset_loader = torch.utils.data.DataLoader(
         test_dataset, batch_size=args['TEST_DATASET_LOADER_BATCH_SIZE'], shuffle=args['TEST_DATASET_LOADER_SHUFFLE'])
 
-    # Select network model
-    
 
     model_ = model.SysID_MLP(
         args['INPUT_SIZE'] * args['SEQUENCE_LENGTH'], args['HIDDEN_SIZE'], args['NUM_LAYERS'], args['OUTPUT_SIZE'], dropout=args['DROPOUT'])
@@ -95,7 +92,7 @@ if __name__ == '__main__':
     print(model_)
     time.sleep(1)
 
-    os.mkdir(args['MODEL_SAVE_PATH'] + args['NETWORK_TYPE'] + '/')
+    os.mkdir(args['MODEL_SAVE_PATH'])
 
     while True:
 

@@ -77,8 +77,8 @@ class TrialDataset(torch.utils.data.Dataset):
 
         if y != 0:
             y = torch.tensor(1)
-
-
+        
+        #y = (y + 150) / 300
         
 
         y = y.long()

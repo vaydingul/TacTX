@@ -103,6 +103,9 @@ classdef TacTX < TacTX_
 
         function plot(obj, varargin)
 
+            forceTorqueString = {'F_x', 'F_y', 'F_z', 'T_x', 'T_y', 'T_z'};
+            accelerometerString = {'a_x', 'a_y', 'a_z'};
+
             ixs = 'all';
             forceTorque = [1 3];
             accelerometer = [1 3];
@@ -134,7 +137,7 @@ classdef TacTX < TacTX_
 
             end
 
-            subplotRow = length(forceTorque) + length(accelerometer) + 1;
+            subplotRow = length(forceTorque) + length(accelerometer) + ~isempty(obj.SignalGenerator);
             subplotCol = 1 + isFftRequired;
 
             f = figure;
@@ -143,7 +146,6 @@ classdef TacTX < TacTX_
             axs1 = [];
 
             for k = 1:length(forceTorque)
-
 
                 if strcmp(ixs, 'all')
 
@@ -155,16 +157,15 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, 2*cnt-1 + ~isFftRequired*(+1-cnt));
+                ax = subplot(subplotRow, subplotCol, 2 * cnt - 1 + ~isFftRequired * (+1 - cnt));
                 axs1(cnt) = ax;
 
                 plot(obj.ForceSensor.ForceTorque(ix, forceTorque(k)));
-                title(['Force Sensor ' num2str(forceTorque(k))]);
+                title(['Force Sensor ' forceTorqueString{forceTorque(k)}]);
                 cnt = cnt + 1;
             end
 
             for k = 1:length(accelerometer)
-
 
                 if strcmp(ixs, 'all')
 
@@ -176,79 +177,15 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, 2*cnt-1 + ~isFftRequired*(+1-cnt));
+                ax = subplot(subplotRow, subplotCol, 2 * cnt - 1 + ~isFftRequired * (+1 - cnt));
                 axs1(cnt) = ax;
 
                 plot(obj.Accelerometer.Acceleration(ix, accelerometer(k)));
-                title(['Accelerometer ' num2str(accelerometer(k))]);
+                title(['Accelerometer ' accelerometerString{accelerometer(k)}]);
                 cnt = cnt + 1;
             end
 
-
-            if strcmp(ixs, 'all')
-
-                ix = 1:size(obj.SignalGenerator.Signal, 1);
-
-            else
-
-                ix = ixs;
-
-            end
-
-            ax = subplot(subplotRow, subplotCol, 2*cnt-1 + ~isFftRequired*(+1-cnt));
-            axs1(cnt) = ax;
-
-            plot(obj.SignalGenerator.SignalProcessed(ix));
-            title(['Signal']);
-            cnt = cnt + 1;
-
-            if isFftRequired
-                
-                cnt = 1;
-                axs2 = [];
-                for k = 1:length(forceTorque)
-
-
-                    if strcmp(ixs, 'all')
-
-                        ix = 1:size(obj.ForceSensor.GaugeVoltage, 1);
-
-                    else
-
-                        ix = ixs;
-
-                    end
-
-                    ax = subplot(subplotRow, subplotCol, 2*cnt);
-                    axs2(cnt) = ax;
-
-                    [f, w] = fft_data(obj.ForceSensor.ForceTorque(ix, forceTorque(k)), obj.Config.SAMPLE_RATE);
-                    stem(log10(f), w);
-                    title(['FFT Force Sensor ' num2str(forceTorque(k))]);
-                    cnt = cnt + 1;
-                end
-
-                for k = 1:length(accelerometer)
-
-
-                    if strcmp(ixs, 'all')
-
-                        ix = 1:size(obj.Accelerometer.GaugeVoltage, 1);
-
-                    else
-
-                        ix = ixs;
-
-                    end
-
-                    ax = subplot(subplotRow, subplotCol, 2*cnt);
-                    axs2(cnt) = ax;
-                    [f, w] = fft_data(obj.Accelerometer.Acceleration(ix, accelerometer(k)), obj.Config.SAMPLE_RATE);
-                    stem(log10(f), w);
-                    title(['FFT Accelerometer ' num2str(accelerometer(k))]);
-                    cnt = cnt + 1;
-                end
-
+            if ~isempty(obj.SignalGenerator)
 
                 if strcmp(ixs, 'all')
 
@@ -260,12 +197,79 @@ classdef TacTX < TacTX_
 
                 end
 
-                ax = subplot(subplotRow, subplotCol, 2*cnt);
-                axs2(cnt) = ax;
-                [f, w] = fft_data(obj.SignalGenerator.SignalProcessed(ix), obj.Config.SAMPLE_RATE);
-                stem(log10(f), w)
+                ax = subplot(subplotRow, subplotCol, 2 * cnt - 1 + ~isFftRequired * (+1 - cnt));
+                axs1(cnt) = ax;
+
+                plot(obj.SignalGenerator.SignalProcessed(ix));
                 title(['Signal']);
                 cnt = cnt + 1;
+            end
+
+            if isFftRequired
+
+                cnt = 1;
+                axs2 = [];
+
+                for k = 1:length(forceTorque)
+
+                    if strcmp(ixs, 'all')
+
+                        ix = 1:size(obj.ForceSensor.GaugeVoltage, 1);
+
+                    else
+
+                        ix = ixs;
+
+                    end
+
+                    ax = subplot(subplotRow, subplotCol, 2 * cnt);
+                    axs2(cnt) = ax;
+
+                    [f, w] = fft_data(obj.ForceSensor.ForceTorque(ix, forceTorque(k)), obj.Config.SAMPLE_RATE);
+                    stem(log10(f), w);
+                    title(['FFT Force Sensor ' forceTorqueString{forceTorque(k)}]);
+                    cnt = cnt + 1;
+                end
+
+                for k = 1:length(accelerometer)
+
+                    if strcmp(ixs, 'all')
+
+                        ix = 1:size(obj.Accelerometer.GaugeVoltage, 1);
+
+                    else
+
+                        ix = ixs;
+
+                    end
+
+                    ax = subplot(subplotRow, subplotCol, 2 * cnt);
+                    axs2(cnt) = ax;
+                    [f, w] = fft_data(obj.Accelerometer.Acceleration(ix, accelerometer(k)), obj.Config.SAMPLE_RATE);
+                    stem(log10(f), w);
+                    title(['FFT Accelerometer ' accelerometerString{accelerometer(k)}]);
+                    cnt = cnt + 1;
+                end
+
+                if ~isempty(obj.SignalGenerator)
+
+                    if strcmp(ixs, 'all')
+
+                        ix = 1:size(obj.SignalGenerator.Signal, 1);
+
+                    else
+
+                        ix = ixs;
+
+                    end
+
+                    ax = subplot(subplotRow, subplotCol, 2 * cnt);
+                    axs2(cnt) = ax;
+                    [f, w] = fft_data(obj.SignalGenerator.SignalProcessed(ix), obj.Config.SAMPLE_RATE);
+                    stem(log10(f), w)
+                    title(['Signal']);
+                    cnt = cnt + 1;
+                end
 
             end
 
