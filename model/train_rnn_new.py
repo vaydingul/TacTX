@@ -24,9 +24,8 @@ if __name__ == '__main__':
 
     # Load the dataset
     #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/dfg/'
-    #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Berke_RBS_Response_Dataset/dataset/'
-    args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/28.12.2021_New_Setup_Volkan_Modulated_RBS_Response_Dataset/dataset'
-
+    #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/28.12.2021_New_Setup_Volkan_Modulated_RBS_Response_Dataset/normalized_dataset'
+    args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Volkan_RBS_Response_Dataset/dataset'
     args['BATCH_SIZE'] = 800
     args['INPUT_SIZE'] = 4
     args['OUTPUT_SIZE'] = 2
@@ -34,7 +33,7 @@ if __name__ == '__main__':
     args['HIDDEN_SIZE'] = 256
     args['SEQUENCE_LENGTH'] = 127
     args['NUM_EPOCHS'] = 1
-    args['NUM_TRAINING'] = 2
+    args['NUM_TRAINING'] = 5
     args['DOWNLOAD_PER_ITER'] = args['NUM_EPOCHS'] * args['NUM_TRAINING']
     args['NETWORK_TYPE'] = 'rnn'
     args['RNN_TYPE'] = nn.LSTM
@@ -43,11 +42,8 @@ if __name__ == '__main__':
     args['ANIMATE'] = True
     args['CONCAT_ALL'] = True
     args['X_DATA'] = ['accelerationX_', 'accelerationZ_', 'forceX_', 'forceZ_']
-    #args['X_DATA'] = ['forceX_']
     args['Y_DATA'] = 'signal_'
     args['NUM_CLASSES'] = 2
-    #args['X_DATA'] = ['normal_force']
-    #args['Y_DATA'] = 'signal_save'
 
     args['MODEL_SAVE_PATH'] = './model/' + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + \
         '_' + args['NETWORK_TYPE'] + '/'

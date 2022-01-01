@@ -20,7 +20,7 @@ if __name__ == '__main__':
     main_folder = "2021-12-30-00-10-50_rnn/"
     model_folder = "model_rnn_16/"
     checkpoint_path = "/home/vaydingul20/Documents/RML/TacTX/model/" + main_folder + model_folder + "/checkpoint.pt"
-    real_texture_path =  '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/30.12.2021_New_Setup_Real_Texture_Measurement_Red_Fabric_Dataset/dataset'
+    real_texture_path =  '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/30.12.2021_New_Setup_Real_Texture_Measurement_Fabric_Dataset/dataset'
  
     state = torch.load(checkpoint_path)
 
@@ -75,20 +75,35 @@ if __name__ == '__main__':
 
     model_.to(args['device'])
     batch_size = 1000
-    
+
+
+    title_dict = {'accelerationX_': '$a_{tangential}$',
+                  'accelerationZ_': '$a_{normal}$',
+                  'forceX_': '$F_{tangential}$',
+                  'forceZ_': '$F_{normal}$'}
+
     for trial_idx, (test_trial) in enumerate(train_dataset_loader):
 
            
         train_trial_loader = torch.utils.data.DataLoader(
             test_trial, batch_size=batch_size, shuffle=False, drop_last=False)
 
-        predicted = inference_one_trial(model = model_, device = args['device'], test_trial_loader = train_trial_loader)
+        data, _, predicted = inference_one_trial(model = model_, device = args['device'], test_trial_loader = train_trial_loader)
 
 
-    plt.figure()
-    plt.plot(predicted.cpu(), label = 'predicted')
-    #plt.plot(target.cpu(), label = 'target')
+    fig = plt.figure()
+
+    for x in range(data.shape[2]):
+
+        plt.subplot(5, 1, x+1, title=title_dict[args['X_DATA'][x]])
+        plt.plot(data[:, int((args['SEQUENCE_LENGTH']-1)/2),
+                 x].cpu())
+
+    plt.subplot(5, 1, 5, title = 'Signal')
+    plt.plot(predicted.cpu())
     plt.legend()
+    fig.tight_layout()
     plt.show()
+
 
    
