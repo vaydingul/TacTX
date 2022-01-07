@@ -130,10 +130,11 @@ class HapticDataset(torch.utils.data.Dataset):
 
             return TrialDataset(self.data_files, x_data = self.x_data, y_data = self.y_data, sequence_length=self.sequence_length, num_class = self.num_class, network_type=self.network_type)
 
-def generate_datasets(data_path, x_data = ["normal_force"], y_data = "signal_save", train_test_split=0.8, sequence_length=5, num_class = 2, network_type='rnn', concat_all = False):
+def generate_datasets(data_path, x_data = ["normal_force"], y_data = "signal_save", train_test_split=0.8, sequence_length=5, num_class = 2, network_type='rnn', concat_all = False, seed = 42):
     """
 
     """
+    np.random.seed(seed)
     data_files = os.listdir(data_path)
     data_files = [os.path.join(data_path, data_file)
                   for data_file in data_files]
