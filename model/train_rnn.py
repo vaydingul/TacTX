@@ -24,8 +24,8 @@ if __name__ == '__main__':
 
     # Load the dataset
     #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Haptics_Modelling/data/dfg/'
-    #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/28.12.2021_New_Setup_Volkan_Modulated_RBS_Response_Dataset/normalized_dataset'
-    args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Volkan_RBS_Response_Dataset/dataset'
+    args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/28.12.2021_New_Setup_Volkan_Modulated_RBS_Response_Dataset/dataset'
+    #args['DATA_PATH'] = '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/16.12.2021_New_Setup_Volkan_RBS_Response_Dataset/dataset'
     args['BATCH_SIZE'] = 800
     args['INPUT_SIZE'] = 4
     args['OUTPUT_SIZE'] = 2
@@ -39,9 +39,11 @@ if __name__ == '__main__':
     args['RNN_TYPE'] = nn.LSTM
     args['RNN_PARAMETERS'] = {}
     args['DROPOUT'] = 0.0
-    args['ANIMATE'] = True
+    args['ANIMATE'] = False
     args['CONCAT_ALL'] = True
-    args['X_DATA'] = ['accelerationX_', 'accelerationZ_', 'forceX_', 'forceZ_']
+    #args['X_DATA'] = ['accelerationX_', 'accelerationZ_', 'forceX_', 'forceZ_']
+    args['X_DATA'] = ['accelerationX_', 'accelerationZ_',
+                      'cof_dot_normalized_', 'cof_normalized_']
     args['Y_DATA'] = 'signal_'
     args['NUM_CLASSES'] = 2
 
@@ -70,7 +72,7 @@ if __name__ == '__main__':
     assert args['OUTPUT_SIZE'] == args['NUM_CLASSES'], "OUTPUT_SIZE and NUM_CLASSES must be the same length"
 
     train_dataset, test_dataset = dataset_util.generate_datasets(
-        data_path=args['DATA_PATH'], x_data=args['X_DATA'], y_data=args['Y_DATA'], sequence_length=args['SEQUENCE_LENGTH'], num_class=args['NUM_CLASSES'], network_type=args['NETWORK_TYPE'], concat_all=args['CONCAT_ALL'], train_test_split=args['TRAIN_TEST_SPLIT'], seed = args['DATASET_SEED'])
+        data_path=args['DATA_PATH'], x_data=args['X_DATA'], y_data=args['Y_DATA'], sequence_length=args['SEQUENCE_LENGTH'], num_class=args['NUM_CLASSES'], network_type=args['NETWORK_TYPE'], concat_all=args['CONCAT_ALL'], train_test_split=args['TRAIN_TEST_SPLIT'], seed=args['DATASET_SEED'])
 
     # train_dataset, test_dataset = dataset_util.generate_datasets(
     #    data_path=DATA_PATH, x_data = ["forceX_", "forceZ_", "accelerationX_", "accelerationZ_"], y_data = "signal_", sequence_length=SEQUENCE_LENGTH, network_type=NETWORK_TYPE, concat_all=CONCAT_ALL, train_test_split=0.8)
@@ -99,8 +101,15 @@ if __name__ == '__main__':
 
     os.mkdir(args['MODEL_SAVE_PATH'])
 
+
+    args['train_loss_data'] = np.empty(0,)
+    args['train_acc_data'] = np.empty(0,)
+    args['test_loss_data'] = np.empty(0,)
+    args['test_acc_data'] = np.empty(0,)
+
     while True:
 
+        print("EPOCH ===>" + str(iter))
         if args['ANIMATE']:
 
             args['train_loss_data'], args['train_acc_data'], args['test_loss_data'], args['test_acc_data'] = animate_train_evaluate(
@@ -109,8 +118,17 @@ if __name__ == '__main__':
 
         else:
 
-            train_evaluate(model=model_, device=args['device'], train_loader=train_dataset_loader, test_loader=test_dataset_loader,
-                           criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size=args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'])
+            train_loss, train_acc, test_loss, test_acc = train_evaluate(model=model_, device=args['device'], train_loader=train_dataset_loader, test_loader=test_dataset_loader,
+                                                                        criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size=args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'])
+
+            args['train_loss_data'] = np.append(
+                args['train_loss_data'], train_loss)
+            args['train_acc_data'] = np.append(
+                args['train_acc_data'], train_acc)
+            args['test_loss_data'] = np.append(
+                args['test_loss_data'], test_loss)
+            args['test_acc_data'] = np.append(args['test_acc_data'], test_acc)
+
             iter += args['NUM_EPOCHS']
 
         if np.mod(iter, args['DOWNLOAD_PER_ITER']) == 0:
@@ -128,3 +146,8 @@ if __name__ == '__main__':
 
             model.save_checkpoint(model_, optimizer, criterion_train, criterion_test, path=dir_name + "checkpoint.pt",
                                   args=args)
+
+            args['train_loss_data'] = np.empty(0,)
+            args['train_acc_data'] = np.empty(0,)
+            args['test_loss_data'] = np.empty(0,)
+            args['test_acc_data'] = np.empty(0,)

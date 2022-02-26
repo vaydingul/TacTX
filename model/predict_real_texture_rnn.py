@@ -17,10 +17,10 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 
-    main_folder = "2021-12-30-00-10-50_rnn/"
-    model_folder = "model_rnn_16/"
+    main_folder = "2022-01-09-17-13-25_rnn/"
+    model_folder = "model_rnn_15/"
     checkpoint_path = "/home/vaydingul20/Documents/RML/TacTX/model/" + main_folder + model_folder + "/checkpoint.pt"
-    real_texture_path =  '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/30.12.2021_New_Setup_Real_Texture_Measurement_Fabric_Dataset/dataset'
+    real_texture_path =  '/home/vaydingul20/Documents/RML/Measurements_and_Analyses/30.12.2021_New_Setup_Real_Texture_Measurement_Cardboard_Folder_Dataset/dataset'
  
     state = torch.load(checkpoint_path)
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     for (k, v) in args.items():
         print(k, ' -> ', v)
-
+    
     if torch.cuda.is_available():
 
         args['device'] = 'cuda:0'
@@ -77,10 +77,16 @@ if __name__ == '__main__':
     batch_size = 1000
 
 
+    #title_dict = {'accelerationX_': '$a_{tangential}$',
+    #              'accelerationZ_': '$a_{normal}$',
+    #              'forceX_': '$F_{tangential}$',
+    #              'forceZ_': '$F_{normal}$'}
+    
+    
     title_dict = {'accelerationX_': '$a_{tangential}$',
                   'accelerationZ_': '$a_{normal}$',
-                  'forceX_': '$F_{tangential}$',
-                  'forceZ_': '$F_{normal}$'}
+                  'cof_dot_normalized_': 'Normalized $\dot{CoF}$',
+                  'cof_normalized_': 'Normalized ${CoF}$'}
 
     for trial_idx, (test_trial) in enumerate(train_dataset_loader):
 
@@ -91,18 +97,19 @@ if __name__ == '__main__':
         data, _, predicted = inference_one_trial(model = model_, device = args['device'], test_trial_loader = train_trial_loader)
 
 
-    fig = plt.figure()
+        fig = plt.figure()
 
-    for x in range(data.shape[2]):
+        for x in range(data.shape[2]):
 
-        plt.subplot(5, 1, x+1, title=title_dict[args['X_DATA'][x]])
-        plt.plot(data[:, int((args['SEQUENCE_LENGTH']-1)/2),
-                 x].cpu())
+            plt.subplot(len(args['X_DATA']) + 1, 1, x+1, title=title_dict[args['X_DATA'][x]])
+            plt.plot(data[:, int((args['SEQUENCE_LENGTH']-1)/2),
+                    x].cpu())
 
-    plt.subplot(5, 1, 5, title = 'Signal')
-    plt.plot(predicted.cpu())
-    plt.legend()
-    fig.tight_layout()
+        plt.subplot(len(args['X_DATA']) + 1, 1, len(args['X_DATA']) + 1, title = 'Signal')
+        plt.plot(predicted.cpu())
+        plt.legend()
+        fig.tight_layout()
+
     plt.show()
 
 

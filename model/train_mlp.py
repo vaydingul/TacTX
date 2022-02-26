@@ -95,23 +95,40 @@ if __name__ == '__main__':
 
     os.mkdir(args['MODEL_SAVE_PATH'])
 
+    args['train_loss_data'] = np.empty(0,)
+    args['train_acc_data'] = np.empty(0,)
+    args['test_loss_data'] = np.empty(0,)
+    args['test_acc_data'] = np.empty(0,)
+
     while True:
 
+        print("EPOCH ===>" + str(iter))
         if args['ANIMATE']:
 
-            args['train_loss_data'], args['train_acc_data'], args['test_loss_data'], args['test_acc_data'] = animate_train_evaluate(model = model_, device = args['device'], train_loader = train_dataset_loader, test_loader = test_dataset_loader, criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size = args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'], num_training=args['NUM_TRAINING'])
+            args['train_loss_data'], args['train_acc_data'], args['test_loss_data'], args['test_acc_data'] = animate_train_evaluate(
+                model=model_, device=args['device'], train_loader=train_dataset_loader, test_loader=test_dataset_loader, criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size=args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'], num_training=args['NUM_TRAINING'])
             iter += args['NUM_EPOCHS'] * args['NUM_TRAINING']
 
         else:
 
-            train_evaluate(model = model_, device = args['device'], train_loader = train_dataset_loader, test_loader = test_dataset_loader, criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size = args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'])
+            train_loss, train_acc, test_loss, test_acc = train_evaluate(model=model_, device=args['device'], train_loader=train_dataset_loader, test_loader=test_dataset_loader,
+                                                                        criterion_train=criterion_train, criterion_test=criterion_test, optimizer=optimizer, batch_size=args['BATCH_SIZE'], epoch=args['NUM_EPOCHS'])
+
+            args['train_loss_data'] = np.append(
+                args['train_loss_data'], train_loss)
+            args['train_acc_data'] = np.append(
+                args['train_acc_data'], train_acc)
+            args['test_loss_data'] = np.append(
+                args['test_loss_data'], test_loss)
+            args['test_acc_data'] = np.append(args['test_acc_data'], test_acc)
+
             iter += args['NUM_EPOCHS']
-        
 
         if np.mod(iter, args['DOWNLOAD_PER_ITER']) == 0:
 
-            dir_name = args['MODEL_SAVE_PATH'] + 'model_' + args['NETWORK_TYPE'] + '_' + str(iter) + '/'
-            
+            dir_name = args['MODEL_SAVE_PATH'] + '/' + 'model_' + \
+                args['NETWORK_TYPE'] + '_' + str(iter) + '/'
+
             try:
 
                 os.mkdir(dir_name)
@@ -120,6 +137,10 @@ if __name__ == '__main__':
 
                 print('Directory already exists')
 
-          
-            model.save_checkpoint(model_, optimizer, criterion_train, criterion_test, path = dir_name + "checkpoint.pt",
-            args = args)
+            model.save_checkpoint(model_, optimizer, criterion_train, criterion_test, path=dir_name + "checkpoint.pt",
+                                  args=args)
+
+            args['train_loss_data'] = np.empty(0,)
+            args['train_acc_data'] = np.empty(0,)
+            args['test_loss_data'] = np.empty(0,)
+            args['test_acc_data'] = np.empty(0,)

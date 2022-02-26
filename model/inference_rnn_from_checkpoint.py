@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 
-    main_folder = "2021-12-30-05-59-39_rnn/"
-    model_folder = "model_rnn_15/"
+    main_folder = "2022-01-08-00-15-51_rnn/"
+    model_folder = "model_rnn_20/"
     checkpoint_path = "/home/vaydingul20/Documents/RML/TacTX/model/" + \
         main_folder + model_folder + "/checkpoint.pt"
 
@@ -27,7 +27,6 @@ if __name__ == '__main__':
     for (k, v) in args.items():
         print(k, ' -> ', v)
 
-    exit()
     if torch.cuda.is_available():
 
         args['device'] = 'cuda:0'

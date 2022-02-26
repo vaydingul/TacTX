@@ -167,7 +167,7 @@ def train_evaluate(model, device, train_loader, test_loader, criterion_train, cr
     test_loss, test_acc = evaluate(model=model, device=device, test_loader=test_loader,
                 criterion=criterion_test, batch_size=batch_size)
 
-    return train_loss, train_acc, test_loss, test_acc
+    return train_loss.item(), train_acc, test_loss, test_acc
 
 def animate_train_evaluate(model, device, train_loader, test_loader, criterion_train, criterion_test, optimizer, batch_size, epoch, num_training):
 
@@ -217,7 +217,7 @@ def animate_train_evaluate(model, device, train_loader, test_loader, criterion_t
         random_sample_pred, random_sample_target = inference_one_random_sample(model = model, device = device, test_loader = test_loader)
 
 
-        train_loss_line.set_ydata(np.hstack([train_loss_line.get_ydata(), train_loss.item()]))
+        train_loss_line.set_ydata(np.hstack([train_loss_line.get_ydata(), train_loss]))
         train_loss_line.set_xdata(np.hstack([train_loss_line.get_xdata(), i * epoch]))
 
         train_acc_line.set_ydata(np.hstack([train_acc_line.get_ydata(), train_acc]))
