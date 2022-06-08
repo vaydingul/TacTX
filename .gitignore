@@ -130,3 +130,11 @@ dmypy.json
 
 
 notes.md
+
+./experiments/
+
+./model/
+
+*.mat
+
+*.pt

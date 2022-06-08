@@ -1,8 +1,8 @@
 initExperiment;
-config = generateConfigFile(CONFIG, 1,2  , 0.5, 4);
+config = generateConfigFile(CONFIG, 1,5  , 0.5, 4);
 tactx = TacTX('State', IdleState, 'Config', config);
 
-tactx.SignalGenerator.Signal = 2*tactx.Config.SIGNAL{1};
+tactx.SignalGenerator.Signal = tactx.Config.SIGNAL{1};
 
 
 disp("NOW!");

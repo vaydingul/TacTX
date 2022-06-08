@@ -16,13 +16,9 @@ classdef IdleState < State
             end
 			
 			tactx.NIHandler.start(varargin{:});
-			
-			if tactx.Config.PRACTICE_MODE
-				
-				tactx.MISCHandler.start();
 
-			end
-			
+			tactx.MISCHandler.start();
+
 			tactx.State = RunState();
 
 
@@ -52,6 +48,7 @@ classdef IdleState < State
 			tactx.Accelerometer.GaugeVoltage = zeros(1,3);
 			tactx.ForceSensor.ForceTorque = zeros(1,6);
 			tactx.Accelerometer.Acceleration = zeros(1,3);
+			tactx.FingerTracker.FingerPosition = zeros(1,2);
 			tactx.State = SaveState();
     
 

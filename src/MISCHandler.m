@@ -32,7 +32,7 @@ classdef MISCHandler < Handler
             end
 
         end
-
+        
         function outData = read(obj)
 
             pointerLocation = get(0, 'PointerLocation');
